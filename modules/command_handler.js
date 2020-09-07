@@ -1,7 +1,7 @@
-export class Handler {
+class Handler {
     dbm;
 
-    static initialize(dbm) {
+    constructor(self, dbm) {
         self.dbm = dbm;
     }
 
@@ -15,3 +15,5 @@ export class Handler {
 function split_args(content) {
 
 }
+
+module.exports.Handler = Handler

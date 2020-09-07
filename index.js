@@ -3,7 +3,7 @@ const discord = require('discord.js');
 const client = new discord.Client()
 const dbm = require('./modules/database.js');
 const commands = require('./modules/command_handler.js');
-const handler = commands.Handler.initialize(dbm)
+const handler = new commands.Handler(dbm)
 client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`);
 });
