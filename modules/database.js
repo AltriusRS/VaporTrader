@@ -12,66 +12,41 @@ const knex = require('knex')({
     }
 });
 
-start()
 
-async function start() {
-    let processed = 0;
-    let items = [];
-    let drops = [];
-    let price_history = []
-    for (const item of itembase) {
-        let stored_item = await knex.select('*').from('items').whereRaw(`items.id = \'${item._id}\'`);
-        if (stored_item[0] == null || stored_item[0] == undefined) {
+fuzzy_search_item("Soma");
 
-            console.log(`${item.en.item_name} (${item._id}) not found in database`)
-            items.push({
-                id: item._id,
-                item_name: item.en.item_name,
-                tradable: item.tradable,
-                icon: item.icon,
-                url_name: item.url_name,
-                wiki_link: item.en.wiki_link,
-                trade_tax: item.trading_tax
-            });
-            item.en.drop.forEach(drop => {
-                drops.push({
-                    item_id: item._id,
-                    name: drop.name
-                })
-            })
-
-            try {
-                processed+=1;
-                let {body} = await superagent.get(`https://api.warframe.market/v1/items/${item.url_name}/statistics`)
-                let prices = body.payload.statistics_closed['90days'];
-                prices.forEach(price => {
-                    price_history.push({
-                        item_id: item._id,
-                        timestamp: price.datetime,
-                        avg_price: price.avg_price,
-                        highest_price: price.max_price,
-                        lowest_price: price.min_price
-                    })
-                })
-            } catch(e) {
-                if(e.status === 503){
-                    console.log(`unable to get price stats for (${item._id})`);
-                } else {
-                    console.log(e)
-                }
+module.exports = {
+    fuzzy_search_item,
+}
+async function fuzzy_search_item(name) {
+    let processed = [];
+    let raw_results = await knex.select('*').from('items').whereRaw(`items.item_name LIKE '%${name}%'`)
+    if (raw_results.length > 0) {
+        for (let i =0; i<raw_results.length; i++) {
+            let result = raw_results[i];
+            let drops = await knex.select("name").from('drops').whereRaw(`drops.item_id = '${result.id}'`)
+            let prices = await knex.select(["avg_price","timestamp", "highest_price", "lowest_price"]).from('price_history').whereRaw(`price_history.item_id = '${result.id}'`)
+            let total = 0;
+            let high = 0;
+            let low = 1000;
+            for(let pid =0; pid<prices.length;pid++){
+                let price = prices[pid];
+                total+=price.avg_price;
+                if (price.highest_price > high) high = price.highest_price;
+                if (price.lowest_price < low) low = price.lowest_price;
             }
-        }
-        if (processed === itembase.length) {
-            write(items, drops, price_history)
+            let avg = total/prices.length;
+            result.drops = drops;
+            result.prices = prices;
+            result.highest_price = high
+            result.lowest_price = low
+            result.avg_price = avg
+            processed.push(result)
         }
     }
-}
+    while (processed.length !== raw_results.length) {
 
-async function write(items, drops, price_history) {
-    let dropsql = knex.insert(drops).into('drops').toQuery();
-    let itemsql = knex.insert(items).into('items').toQuery();
-    let pricesql = knex.insert(price_history).into('price_history').toQuery();
-    let sql = `${dropsql}\n${itemsql}\n${pricesql}`;
-
-    await fs.writeFileSync('./items.sql', sql);
+    }
+    await fs.writeFileSync(`./${name}.fuzzy.json`, JSON.stringify(processed));
+    process.exit()
 }
