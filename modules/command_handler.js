@@ -1,15 +1,7 @@
 class Handler {
-    dbm;
-
-    constructor(self, dbm) {
-        self.dbm = dbm;
+    constructor(dbm) {
+        this.dbm = dbm;
     }
-
-    static handle(message) {
-
-    }
-
-
 }
 
 function split_args(content) {
