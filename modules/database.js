@@ -1,6 +1,3 @@
-const superagent = require('superagent');
-const fs = require('fs');
-const itembase = require('../items.json');
 const knex = require('knex')({
     client: 'pg',
     connection: {
@@ -11,9 +8,6 @@ const knex = require('knex')({
         port: 5432
     }
 });
-
-
-fuzzy_search_item("Soma");
 
 module.exports = {
     fuzzy_search_item,
@@ -36,6 +30,8 @@ async function fuzzy_search_item(name) {
                 if (price.lowest_price < low) low = price.lowest_price;
             }
             let avg = total/prices.length;
+            if (isNaN(avg)) avg=0;
+            if (low > high) low=high;
             result.drops = drops;
             result.prices = prices;
             result.highest_price = high
@@ -47,6 +43,5 @@ async function fuzzy_search_item(name) {
     while (processed.length !== raw_results.length) {
 
     }
-    await fs.writeFileSync(`./${name}.fuzzy.json`, JSON.stringify(processed));
-    process.exit()
+    return processed;
 }
