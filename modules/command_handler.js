@@ -12,7 +12,12 @@ async function handle(message, client) {
         let cmd = commands[command];
         if (cmd !== null && cmd !== undefined) {
             if (cmd.preflight(message, args, client, dbm)) {
-                cmd.run(message, args, client, dbm);
+                try {
+                    cmd.run(message, args, client, dbm);
+                    client.emit("commandSuccess123");
+                } catch (e) {
+                    console.log(e);
+                }
             }
         }
     }

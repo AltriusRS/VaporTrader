@@ -1,10 +1,11 @@
 const Discord = require('discord.js');
+const superagent = require('superagent');
 const d3 = require('d3');
 const {createCanvas} = require('canvas');
 
 module.exports = {
     name: "prices",
-    aliases: ["p"],
+    aliases: ["p", "price"],
     description: "A commmand that takes your input and returns a set of items matching your description. example: `ps!search Soma Prime`",
     help: (message, client) => {
         let embed = new Discord.MessageEmbed()
@@ -14,51 +15,140 @@ module.exports = {
             .addField("Aliases:", `\`${module.exports.name}\` \`${module.exports.aliases.join("`, `")}\``)
         message.channel.send(embed)
     },
-    run: (message, args, client, dbm) => {
-        const svg = d3.create("svg")
-            .attr("viewBox", [0, 0, width, height]);
+    run: async (message, args, client, dbm) => {
+        message.channel.startTyping()
+        let search_results = await dbm.fuzzy_search_item(args.join(" ").split('\'').join('\\\''));
+        let item = search_results[0];
+        if (item === undefined) {
+            message.channel.send("Unknown Item")
+            message.channel.stopTyping()
+        } else {
+            let embed = new Discord.MessageEmbed()
+                .setColor("#ffca07")
+                .setTitle(`Price Information - ${item.item_name}`)
+                .setFooter("These prices may not always be attainable prices on the market, they are averages of the orders currently listing this item");
 
-        const rect = svg.selectAll("g")
-            .data(y01z)
-            .join("g")
-            .attr("fill", (d, i) => z(i))
-            .selectAll("rect")
-            .data(d => d)
-            .join("rect")
-            .attr("x", (d, i) => x(i))
-            .attr("y", height - margin.bottom)
-            .attr("width", x.bandwidth())
-            .attr("height", 0);
+            let text = `90 day average: ${item.avg_price.toFixed(0)} <:platinum:752799138323628083>\n90 day high: ${item.highest_price.toFixed(0)} <:platinum:752799138323628083>\n90 day low: ${item.lowest_price.toFixed(0)} <:platinum:752799138323628083>\n[View on warframe.market](https://warframe.market/items/${item.url_name})`;
+            let modMode = false;
+            let averages = undefined;
 
-        svg.append("g")
-            .call(xAxis);
-        dbm.fuzzy_search_item(args.join(" ")).then(search_results => {
-            let item = search_results[0];
-            if (item !== undefined) {
-                let highest_x = 90;
-                let all_x = [];
-                let trend_high = [];
-                let trend_low = [];
-                let trend_avg = [];
-                while (all_x.length < highest_x) {
-                    all_x.push(all_x.length - highest_x);
+            try {
+                let info = (await superagent.get(`https://api.warframe.market/v1/items/${item.url_name}`)).body.payload;
+                if (info.item.items_in_set[0].tags.includes('mod')) modMode = true;
+                embed.setThumbnail(`https://warframe.market/static/assets/${info.item.items_in_set[0].icon}`);
+                let prices = (await superagent.get(`https://api.warframe.market/v1/items/${item.url_name}/statistics`)).body.payload;
+                let orders = (await superagent.get(`https://api.warframe.market/v1/items/${item.url_name}/orders`)).body.payload.orders;
+                averages = calc_avg(prices.statistics_closed['90days'], orders);
+                if (modMode) {
+                    let levels = {};
+                    orders.forEach(order => {
+                        if (levels[order.mod_rank] === undefined) levels[order.mod_rank] = {
+                            buyers: 0,
+                            sellers: 0,
+                            orders: [],
+                            prices: []
+                        };
+                        if (order.order_type === "sell") {
+                            levels[order.mod_rank].sellers += 1;
+                        } else {
+                            levels[order.mod_rank].buyers += 1;
+                        }
+                        levels[order.mod_rank].orders.push(order)
+                        levels[order.mod_rank].prices.push({
+                            max_price: order.platinum,
+                            min_price: order.platinum,
+                            avg_price: order.platinum
+                        });
+                    })
+                    Object.keys(levels).forEach(level => {
+                        let averages = calc_avg(levels[level].prices, levels[level].orders);
+                        let rankText = `Average: ${item.avg_price.toFixed(0)} <:platinum:752799138323628083>\nHigh: ${item.highest_price.toFixed(0)} <:platinum:752799138323628083>\nLow: ${item.lowest_price.toFixed(0)} <:platinum:752799138323628083>\nBuyers: ${formatNo(averages.buyVolumeTotal)}\nSellers: ${formatNo(averages.sellVolumeTotal)}\nUtilization*: ${formatNo(averages.marketCap.toFixed(0))}%\nPrice Trend: ${averages.ninetyDayTrend}`
+                        embed.addField(`Rank: ${level}`, rankText, true);
+                    })
                 }
+            } catch (e) {
+                console.log("encountered an error getting item price history", e);
+                text += "\n:exclamation: Had problems fetching most recent price data :exclamation:";
+            }
+            embed.setFooter("* The utilization of buyers, by the sellers (how well do the sellers supply the demands of buyers)\nThese prices may not always be attainable prices on the market, they are averages of the orders currently listing this item")
 
-                for (let i = 0; i < item.prices.length; i++) {
-                    let price = item.prices[i];
-                    trend_high.push({x: i, y: price.highest_price});
-                    trend_low.push({x: i, y: price.lowest_price});
-                    trend_avg.push({x: i, y: price.avg_price});
-                }
-                let data = [{"keys": all_x}, trend_avg, trend_high, trend_low]
-                console.log(data)
-
+            if (averages !== undefined) {
+                item.avg_price = averages.averageAVG;
+                item.highest_price = averages.highAVG;
+                item.lowest_price = averages.lowAVG;
+                text = `90 day average: ${item.avg_price.toFixed(0)} <:platinum:752799138323628083>\n90 day high: ${item.highest_price.toFixed(0)} <:platinum:752799138323628083>\n90 day low: ${item.lowest_price.toFixed(0)} <:platinum:752799138323628083>\nOrders (buy/sell): ${formatNo(averages.buyVolumeTotal)} / ${formatNo(averages.sellVolumeTotal)}\nSupply % of demand: ${formatNo(averages.marketCap.toFixed(0))}%\nPrice Trend: ${averages.trend}\nPrice Trend (90 days): ${averages.ninetyDayTrend}\n[View on warframe.market](https://warframe.market/items/${item.url_name})`
             }
 
-        });
+            embed.setDescription("__**Overall Statistics:**__\n" + text);
 
+            message.channel.send(embed)
+            message.channel.stopTyping()
+        }
+        ;
     },
     preflight: (message, args, client, dbm) => {
         return true;
     }
+}
+
+
+function calc_avg(prices, orders) {
+    let trend = ":no_entry:";
+    let trends = {
+        up: 0,
+        down: 0,
+        none: 0,
+    }
+    let last_avg = 0.00;
+    let highTotal = 0.00;
+    let lowTotal = 0.00;
+    let averageTotal = 0.00;
+    let sellVolumeTotal = 0;
+    let buyVolumeTotal = 0;
+    prices.forEach(price => {
+        highTotal += price.max_price;
+        lowTotal += price.min_price;
+        averageTotal += price.avg_price;
+        if (price.avg_price > last_avg) {
+            trend = ":arrow_up:";
+            trends.up += 1;
+        } else if (price.avg_price === last_avg) {
+            trend = ":no_entry:";
+            trends.none += 1;
+        } else {
+            trend = ":arrow_down:";
+            trends.down += 1;
+        }
+        last_avg = price.avg_price;
+    })
+    orders.forEach(order => {
+        if (order.order_type === "sell") {
+            sellVolumeTotal += order.quantity;
+        } else {
+            buyVolumeTotal += order.quantity;
+        }
+    })
+    let highAVG = highTotal / prices.length;
+    if (Number.isNaN(highAVG)) highAVG = 0;
+    let lowAVG = lowTotal / prices.length;
+    if (Number.isNaN(lowAVG)) lowAVG = 0;
+    let averageAVG = averageTotal / prices.length;
+    if (Number.isNaN(averageAVG)) averageAVG = 0;
+    let marketCap = sellVolumeTotal / buyVolumeTotal * 100;
+    if (Number.isNaN(marketCap)) marketCap = 0;
+    let ninetyDayTrend = ":no_entry:";
+    if (trends.up > trends.down && trends.up > trends.none) {
+        ninetyDayTrend = ":arrow_up:"
+    } else if (trends.down > trends.up && trends.down > trends.none) {
+        ninetyDayTrend = ":arrow_down:"
+    } else if (trends.none > trends.up && trends.none > trends.down) {
+        ninetyDayTrend = ":no_entry:"
+    }
+    return {highAVG, lowAVG, averageAVG, sellVolumeTotal, buyVolumeTotal, marketCap, trend, ninetyDayTrend}
+}
+
+function formatNo(x) {
+    let parts = x.toString().split(".");
+    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    return parts.join(".");
 }

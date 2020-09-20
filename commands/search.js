@@ -15,6 +15,7 @@ module.exports = {
     },
     run: async (message, args, client, dbm) => {
         let search_results = await dbm.fuzzy_search_item(args.join(" "));
+        if (search_results[0] === undefined) return;
 
         let embed = new Discord.MessageEmbed()
             .setColor("#ffca07")
@@ -29,23 +30,6 @@ module.exports = {
             let result = search_results[i];
             if (i < 9) {
                 let text = `90 day average: ${result.avg_price.toFixed(0)} <:platinum:752799138323628083>\n90 day high: ${result.highest_price.toFixed(0)} <:platinum:752799138323628083>\n90 day low: ${result.lowest_price.toFixed(0)} <:platinum:752799138323628083>\n[View on warframe.market](https://warframe.market/items/${result.url_name})`;
-                let averages = undefined;
-                try {
-                    let {body} = await superagent.get(`https://api.warframe.market/v1/items/${result.url_name}/statistics`);
-                    let orders = await superagent.get(`https://api.warframe.market/v1/items/${result.url_name}/orders`);
-                    averages = calc_avg(body.payload.statistics_closed['90days'], orders.body.payload.orders);
-                } catch (e) {
-                    console.log("encountered an error getting item price history", e);
-                    text += "\n:exclamation: Had problems fetching most recent price data :exclamation:";
-                }
-
-
-                if (averages !== undefined) {
-                    result.avg_price = averages.averageAVG;
-                    result.highest_price = averages.highAVG;
-                    result.lowest_price = averages.lowAVG;
-                    text = `90 day average: ${result.avg_price.toFixed(0)} <:platinum:752799138323628083>\n90 day high: ${result.highest_price.toFixed(0)} <:platinum:752799138323628083>\n90 day low: ${result.lowest_price.toFixed(0)} <:platinum:752799138323628083>\nOrders (buy/sell): ${formatNo(averages.buyVolumeTotal)} / ${formatNo(averages.sellVolumeTotal)}\nSupply % of demand: ${formatNo(averages.marketCap.toFixed(0))}%\nPrice Trend: ${averages.trend}\nPrice Trend (90 days): ${averages.ninetyDayTrend}\n[View on warframe.market](https://warframe.market/items/${result.url_name})`
-                }
                 embed.addField(`${result.item_name}`, text, true)
             }
         }
