@@ -1,7 +1,5 @@
 const Discord = require('discord.js');
 const superagent = require('superagent');
-const d3 = require('d3');
-const {createCanvas} = require('canvas');
 
 module.exports = {
     name: "prices",
