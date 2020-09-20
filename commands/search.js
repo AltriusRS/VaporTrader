@@ -7,7 +7,7 @@ module.exports = {
     description: "A commmand that takes your input and returns a set of items matching your description. example: `ps!search Soma Prime`",
     help: (message, client) => {
         let embed = new Discord.MessageEmbed()
-            .setColor("#ffca07")
+            .setColor("#c06ed9")
             .setTitle(module.exports.name)
             .setDescription(module.exports.description)
             .addField("Aliases:", `\`${module.exports.name}\` \`${module.exports.aliases.join("`, `")}\``)
@@ -18,7 +18,7 @@ module.exports = {
         if (search_results[0] === undefined) return;
 
         let embed = new Discord.MessageEmbed()
-            .setColor("#ffca07")
+            .setColor("#c06ed9")
             .setTitle("Search Results")
             .setFooter("These prices are not indicative of current trade value, they are averages over a 3 month period.\nPlease keep this in mind.");
         if (search_results.length > 9) {
@@ -29,7 +29,7 @@ module.exports = {
         for (let i = 0; i < search_results.length; i++) {
             let result = search_results[i];
             if (i < 9) {
-                let text = `90 day average: ${result.avg_price.toFixed(0)} <:platinum:752799138323628083>\n90 day high: ${result.highest_price.toFixed(0)} <:platinum:752799138323628083>\n90 day low: ${result.lowest_price.toFixed(0)} <:platinum:752799138323628083>\n[View on warframe.market](https://warframe.market/items/${result.url_name})`;
+                let text = `90 day average: ${result.avg_price.toFixed(0)} <:vaportrader:757350560755089460>\n90 day high: ${result.highest_price.toFixed(0)} <:platinum:752799138323628083>\n90 day low: ${result.lowest_price.toFixed(0)} <:platinum:752799138323628083>\n[View on warframe.market](https://warframe.market/items/${result.url_name})`;
                 embed.addField(`${result.item_name}`, text, true)
             }
         }

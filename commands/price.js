@@ -7,7 +7,7 @@ module.exports = {
     description: "A commmand that takes your input and returns a set of items matching your description. example: `ps!search Soma Prime`",
     help: (message, client) => {
         let embed = new Discord.MessageEmbed()
-            .setColor("#ffca07")
+            .setColor("#c06ed9")
             .setTitle(module.exports.name)
             .setDescription(module.exports.description)
             .addField("Aliases:", `\`${module.exports.name}\` \`${module.exports.aliases.join("`, `")}\``)
@@ -22,17 +22,39 @@ module.exports = {
             message.channel.stopTyping()
         } else {
             let embed = new Discord.MessageEmbed()
-                .setColor("#ffca07")
+                .setColor("#c06ed9")
                 .setTitle(`Price Information - ${item.item_name}`)
                 .setFooter("These prices may not always be attainable prices on the market, they are averages of the orders currently listing this item");
 
-            let text = `90 day average: ${item.avg_price.toFixed(0)} <:platinum:752799138323628083>\n90 day high: ${item.highest_price.toFixed(0)} <:platinum:752799138323628083>\n90 day low: ${item.lowest_price.toFixed(0)} <:platinum:752799138323628083>\n[View on warframe.market](https://warframe.market/items/${item.url_name})`;
+            let text = `90 day average: ${item.avg_price.toFixed(0)} <:vaportrader:757350560755089460>\n90 day high: ${item.highest_price.toFixed(0)} <:vaportrader:757350560755089460>\n90 day low: ${item.lowest_price.toFixed(0)} <:vaportrader:757350560755089460>\n[View on warframe.market](https://warframe.market/items/${item.url_name})`;
             let modMode = false;
             let averages = undefined;
 
             try {
                 let info = (await superagent.get(`https://api.warframe.market/v1/items/${item.url_name}`)).body.payload;
                 if (info.item.items_in_set[0].tags.includes('mod')) modMode = true;
+                if (info.item.items_in_set.length > 1) {
+                    for (let i = 0; i < info.item.items_in_set.length; i++) {
+                        let subItem = info.item.items_in_set[i];
+                        let title = subItem.en.item_name;
+                        let text = `[View Market](https://warframe.market/items/${subItem.url_name})`;
+                        let subavg = undefined;
+
+                        if (!subItem.set_root) {
+                            try {
+                                let subPrices = (await superagent.get(`https://api.warframe.market/v1/items/${subItem.url_name}/statistics`)).body.payload;
+                                let subOrders = (await superagent.get(`https://api.warframe.market/v1/items/${subItem.url_name}/orders`)).body.payload.orders;
+                                subavg = calc_avg(subPrices.statistics_closed['90days'], subOrders);
+                            } catch (e) {
+                                console.log(e);
+                            }
+                            if (subavg !== undefined) {
+                                text = `Average: ${subavg.averageAVG.toFixed(0)} <:vaportrader:757350560755089460>\nHigh: ${subavg.highAVG.toFixed(0)} <:platinum:752799138323628083>\nLow: ${subavg.lowAVG.toFixed(0)} <:platinum:752799138323628083>\n` + text
+                                embed.addField(title, text, true);
+                            }
+                        }
+                    }
+                }
                 embed.setThumbnail(`https://warframe.market/static/assets/${info.item.items_in_set[0].icon}`);
                 let prices = (await superagent.get(`https://api.warframe.market/v1/items/${item.url_name}/statistics`)).body.payload;
                 let orders = (await superagent.get(`https://api.warframe.market/v1/items/${item.url_name}/orders`)).body.payload.orders;
@@ -59,12 +81,17 @@ module.exports = {
                         });
                     })
                     Object.keys(levels).forEach(level => {
-                        let averages = calc_avg(levels[level].prices, levels[level].orders);
-                        let rankText = `Average: ${item.avg_price.toFixed(0)} <:platinum:752799138323628083>\nHigh: ${item.highest_price.toFixed(0)} <:platinum:752799138323628083>\nLow: ${item.lowest_price.toFixed(0)} <:platinum:752799138323628083>\nBuyers: ${formatNo(averages.buyVolumeTotal)}\nSellers: ${formatNo(averages.sellVolumeTotal)}\nUtilization*: ${formatNo(averages.marketCap.toFixed(0))}%\nPrice Trend: ${averages.ninetyDayTrend}`
+                        let lvlaverages = calc_avg(levels[level].prices, levels[level].orders);
+                        if (level === "undefined") level = "MAX";
+                        let rankText = `Average: ${lvlaverages.averageAVG.toFixed(0)} <:vaportrader:757350560755089460>\nHigh: ${lvlaverages.highAVG.toFixed(0)} <:platinum:752799138323628083>\nLow: ${lvlaverages.lowAVG.toFixed(0)} <:platinum:752799138323628083>\nBuyers: ${formatNo(lvlaverages.buyVolumeTotal)}\nSellers: ${formatNo(lvlaverages.sellVolumeTotal)}\nUtilization*: ${formatNo(lvlaverages.marketCap.toFixed(0))}%\nPrice Trend: ${lvlaverages.ninetyDayTrend}`
+                        if (rankText.includes('Infinity%')) {
+                            rankText = rankText.split('Infinity%').join('Infinite');
+                        }
                         embed.addField(`Rank: ${level}`, rankText, true);
                     })
                 }
-            } catch (e) {
+            } catch
+                (e) {
                 console.log("encountered an error getting item price history", e);
                 text += "\n:exclamation: Had problems fetching most recent price data :exclamation:";
             }
@@ -74,7 +101,10 @@ module.exports = {
                 item.avg_price = averages.averageAVG;
                 item.highest_price = averages.highAVG;
                 item.lowest_price = averages.lowAVG;
-                text = `90 day average: ${item.avg_price.toFixed(0)} <:platinum:752799138323628083>\n90 day high: ${item.highest_price.toFixed(0)} <:platinum:752799138323628083>\n90 day low: ${item.lowest_price.toFixed(0)} <:platinum:752799138323628083>\nOrders (buy/sell): ${formatNo(averages.buyVolumeTotal)} / ${formatNo(averages.sellVolumeTotal)}\nSupply % of demand: ${formatNo(averages.marketCap.toFixed(0))}%\nPrice Trend: ${averages.trend}\nPrice Trend (90 days): ${averages.ninetyDayTrend}\n[View on warframe.market](https://warframe.market/items/${item.url_name})`
+                text = `90 day average: ${item.avg_price.toFixed(0)} <:vaportrader:757350560755089460>\n90 day high: ${item.highest_price.toFixed(0)} <:platinum:752799138323628083>\n90 day low: ${item.lowest_price.toFixed(0)} <:platinum:752799138323628083>\nOrders (buy/sell): ${formatNo(averages.buyVolumeTotal)} / ${formatNo(averages.sellVolumeTotal)}\nSupply % of demand: ${formatNo(averages.marketCap.toFixed(0))}%\nPrice Trend: ${averages.trend}\nPrice Trend (90 days): ${averages.ninetyDayTrend}\n[View on warframe.market](https://warframe.market/items/${item.url_name})`
+                if (text.includes('Infinity%')) {
+                    text = text.split('Infinity%').join('Infinite');
+                }
             }
 
             embed.setDescription("__**Overall Statistics:**__\n" + text);
@@ -83,7 +113,8 @@ module.exports = {
             message.channel.stopTyping()
         }
         ;
-    },
+    }
+    ,
     preflight: (message, args, client, dbm) => {
         return true;
     }

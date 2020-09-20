@@ -7,7 +7,7 @@ module.exports = {
     description: "Information about the bot",
     help: (message, client) => {
         let embed = new Discord.MessageEmbed()
-            .setColor("#ffca07")
+            .setColor("#c06ed9")
             .setTitle(module.exports.name)
             .setDescription(module.exports.description)
             .addField("Aliases:", `\`${module.exports.name}\` \`${module.exports.aliases.join("`, `")}\``)
@@ -15,7 +15,7 @@ module.exports = {
     },
     run: async (message, args, client, dbm) => {
         let embed = new Discord.MessageEmbed()
-            .setColor("#ffca07")
+            .setColor("#c06ed9")
             .setTitle(`Information`)
             .setDescription(`Servers: ${formatNo(client.guilds.cache.size)}
             Commands Completed: ${formatNo(client.commandsRan)}
