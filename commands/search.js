@@ -1,4 +1,5 @@
 const Discord = require('discord.js');
+const superagent = require('superagent');
 
 module.exports = {
     name: "search",
@@ -14,9 +15,11 @@ module.exports = {
     },
     run: async (message, args, client, dbm) => {
         let search_results = await dbm.fuzzy_search_item(args.join(" "));
+
         let embed = new Discord.MessageEmbed()
             .setColor("#ffca07")
-            .setTitle("Search Results");
+            .setTitle("Search Results")
+            .setFooter("These prices are not indicative of current trade value, they are averages over a 3 month period.\nPlease keep this in mind.");
         if (search_results.length > 9) {
             embed.setDescription(`Your search for \`${args.join(" ")}\` returned ${search_results.length} results, showing results 1 - 9`);
         } else {
@@ -25,7 +28,25 @@ module.exports = {
         for (let i = 0; i < search_results.length; i++) {
             let result = search_results[i];
             if (i < 9) {
-                embed.addField(`${result.item_name}`, `90 day average: ${result.avg_price.toFixed(0)} <:platinum:752799138323628083>\n90 day high: ${result.highest_price.toFixed(0)} <:platinum:752799138323628083>\n90 day low: ${result.lowest_price.toFixed(0)} <:platinum:752799138323628083>\n[View on warframe.market](https://warframe.market/items/${result.url_name})`, true)
+                let text = `90 day average: ${result.avg_price.toFixed(0)} <:platinum:752799138323628083>\n90 day high: ${result.highest_price.toFixed(0)} <:platinum:752799138323628083>\n90 day low: ${result.lowest_price.toFixed(0)} <:platinum:752799138323628083>\n[View on warframe.market](https://warframe.market/items/${result.url_name})`;
+                let averages = undefined;
+                try {
+                    let {body} = await superagent.get(`https://api.warframe.market/v1/items/${result.url_name}/statistics`);
+                    let orders = await superagent.get(`https://api.warframe.market/v1/items/${result.url_name}/orders`);
+                    averages = calc_avg(body.payload.statistics_closed['90days'], orders.body.payload.orders);
+                } catch (e) {
+                    console.log("encountered an error getting item price history", e);
+                    text += "\n:exclamation: Had problems fetching most recent price data :exclamation:";
+                }
+
+
+                if (averages !== undefined) {
+                    result.avg_price = averages.averageAVG;
+                    result.highest_price = averages.highAVG;
+                    result.lowest_price = averages.lowAVG;
+                    text = `90 day average: ${result.avg_price.toFixed(0)} <:platinum:752799138323628083>\n90 day high: ${result.highest_price.toFixed(0)} <:platinum:752799138323628083>\n90 day low: ${result.lowest_price.toFixed(0)} <:platinum:752799138323628083>\nOrders (buy/sell): ${formatNo(averages.buyVolumeTotal)} / ${formatNo(averages.sellVolumeTotal)}\nSupply % of demand: ${formatNo(averages.marketCap.toFixed(0))}%\nPrice Trend: ${averages.trend}\nPrice Trend (90 days): ${averages.ninetyDayTrend}\n[View on warframe.market](https://warframe.market/items/${result.url_name})`
+                }
+                embed.addField(`${result.item_name}`, text, true)
             }
         }
 
@@ -34,4 +55,65 @@ module.exports = {
     preflight: (message, args, client, dbm) => {
         return true;
     }
+}
+
+function calc_avg(prices, orders) {
+    let trend = ":no_entry:";
+    let trends = {
+        up: 0,
+        down: 0,
+        none: 0,
+    }
+    let last_avg = 0.00;
+    let highTotal = 0.00;
+    let lowTotal = 0.00;
+    let averageTotal = 0.00;
+    let sellVolumeTotal = 0;
+    let buyVolumeTotal = 0;
+    prices.forEach(price => {
+        highTotal += price.max_price;
+        lowTotal += price.min_price;
+        averageTotal += price.avg_price;
+        if (price.avg_price > last_avg) {
+            trend = ":arrow_up:";
+            trends.up += 1;
+        } else if (price.avg_price === last_avg) {
+            trend = ":no_entry:";
+            trends.none += 1;
+        } else {
+            trend = ":arrow_down:";
+            trends.down += 1;
+        }
+        last_avg = price.avg_price;
+    })
+    orders.forEach(order => {
+        if (order.order_type === "sell") {
+            sellVolumeTotal += order.quantity;
+        } else {
+            buyVolumeTotal += order.quantity;
+        }
+    })
+    let highAVG = highTotal / prices.length;
+    if (Number.isNaN(highAVG)) highAVG = 0;
+    let lowAVG = lowTotal / prices.length;
+    if (Number.isNaN(lowAVG)) lowAVG = 0;
+    let averageAVG = averageTotal / prices.length;
+    if (Number.isNaN(averageAVG)) averageAVG = 0;
+    let marketCap = sellVolumeTotal / buyVolumeTotal * 100;
+    if (Number.isNaN(marketCap)) marketCap = 0;
+    let ninetyDayTrend = ":no_entry:";
+    if (trends.up > trends.down && trends.up > trends.none) {
+        ninetyDayTrend = ":arrow_up:"
+    } else if (trends.down > trends.up && trends.down > trends.none) {
+        ninetyDayTrend = ":arrow_down:"
+    } else if (trends.none > trends.up && trends.none > trends.down) {
+        ninetyDayTrend = ":no_entry:"
+    }
+    return {highAVG, lowAVG, averageAVG, sellVolumeTotal, buyVolumeTotal, marketCap, trend, ninetyDayTrend}
+}
+
+function formatNo(x) {
+    let parts = x.toString().split(".");
+    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    return parts.join(".");
 }

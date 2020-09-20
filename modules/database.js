@@ -14,7 +14,7 @@ module.exports = {
 }
 async function fuzzy_search_item(name) {
     let processed = [];
-    let raw_results = await knex.select('*').from('items').whereRaw(`items.item_name LIKE '%${name}%'`)
+    let raw_results = await knex.select('*').from('items').whereRaw(`items.item_name LIKE '%${name}%' OR items.url_name LIKE '%${name.toLowerCase().split(' ').join('_')}%'`)
     if (raw_results.length > 0) {
         for (let i =0; i<raw_results.length; i++) {
             let result = raw_results[i];
