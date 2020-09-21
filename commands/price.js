@@ -40,13 +40,17 @@ module.exports = {
 
             try {
                 let info = (await superagent.get(`https://api.warframe.market/v1/items/${item.url_name}`)).body.payload;
+                embed.setThumbnail(`https://warframe.market/static/assets/${info.item.items_in_set[0].icon}`);
+                let prices = (await superagent.get(`https://api.warframe.market/v1/items/${item.url_name}/statistics`)).body.payload;
+                let orders = (await superagent.get(`https://api.warframe.market/v1/items/${item.url_name}/orders`)).body.payload.orders;
+                averages = calc_avg(prices.statistics_closed['90days'], orders);
+                let sub_totals = {
+                    totalAVG: 0,
+                    totalHigh: 0,
+                    totalLow: 0
+                };
                 if (info.item.items_in_set[0].tags.includes('mod')) modMode = true;
                 if (info.item.items_in_set.length > 1) {
-                    let sub_totals = {
-                        totalAVG: 0,
-                        totalHigh: 0,
-                        totalLow: 0
-                    };
                     for (let i = 0; i < info.item.items_in_set.length; i++) {
                         let subItem = info.item.items_in_set[i];
                         let title = subItem.en.item_name;
@@ -69,12 +73,12 @@ module.exports = {
                             }
                         }
                     }
-                    embed.addField("Component Cost", `Average: ${sub_totals.totalAVG.toFixed(0)} <:vaportrader:757350560755089460>\nHighest: ${sub_totals.totalHigh.toFixed(0)} <:platinum:752799138323628083>\nLowest: ${sub_totals.totalLow.toFixed(0)} <:platinum:752799138323628083>`, false);
+                    let savings = averages.lowAVG - sub_totals.totalLow;
+                    if (savings < averages.averageAVG - sub_totals.totalAVG) savings = averages.averageAVG - sub_totals.totalAVG;
+                    if (savings < averages.highAVG - sub_totals.totalHigh) savings = averages.highAVG - sub_totals.totalHigh;
+
+                    embed.addField("Component Cost", `Average: ${sub_totals.totalAVG.toFixed(0)} <:vaportrader:757350560755089460>\nHighest: ${sub_totals.totalHigh.toFixed(0)} <:platinum:752799138323628083>\nLowest: ${sub_totals.totalLow.toFixed(0)} <:platinum:752799138323628083>\nYou save up to: ${savings.toFixed(0)} <:vaportrader:757350560755089460>`, false);
                 }
-                embed.setThumbnail(`https://warframe.market/static/assets/${info.item.items_in_set[0].icon}`);
-                let prices = (await superagent.get(`https://api.warframe.market/v1/items/${item.url_name}/statistics`)).body.payload;
-                let orders = (await superagent.get(`https://api.warframe.market/v1/items/${item.url_name}/orders`)).body.payload.orders;
-                averages = calc_avg(prices.statistics_closed['90days'], orders);
                 if (modMode) {
                     let levels = {};
                     orders.forEach(order => {
