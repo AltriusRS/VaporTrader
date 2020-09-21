@@ -34,7 +34,7 @@ module.exports = {
                 .setTitle(`Price Information - ${item.item_name}`)
                 .setFooter("These prices may not always be attainable prices on the market, they are averages of the orders currently listing this item");
 
-            let text = `90 day average: ${item.avg_price.toFixed(0)} <:vaportrader:757350560755089460>\n90 day high: ${item.highest_price.toFixed(0)} <:vaportrader:757350560755089460>\n90 day low: ${item.lowest_price.toFixed(0)} <:vaportrader:757350560755089460>\n[View on warframe.market](https://warframe.market/items/${item.url_name})`;
+            let text = `90 day average: ${item.avg_price.toFixed(0)} <:vaportrader:757687668522877009>\n90 day high: ${item.highest_price.toFixed(0)} <:vaportrader:757687668522877009>\n90 day low: ${item.lowest_price.toFixed(0)} <:vaportrader:757687668522877009>\n[View on warframe.market](https://warframe.market/items/${item.url_name})`;
             let modMode = false;
             let averages = undefined;
 
@@ -68,7 +68,7 @@ module.exports = {
                                 console.log(e);
                             }
                             if (subavg !== undefined) {
-                                text = `Average: ${subavg.averageAVG.toFixed(0)} <:vaportrader:757350560755089460>\nHigh: ${subavg.highAVG.toFixed(0)} <:platinum:752799138323628083>\nLow: ${subavg.lowAVG.toFixed(0)} <:platinum:752799138323628083>\n` + text
+                                text = `Average: ${subavg.averageAVG.toFixed(0)} <:vaportrader:757687668522877009>\nHigh: ${subavg.highAVG.toFixed(0)} <:platinum:757676262708871257>\nLow: ${subavg.lowAVG.toFixed(0)} <:platinum:757676262708871257>\n` + text
                                 embed.addField(title, text, true);
                             }
                         }
@@ -77,7 +77,7 @@ module.exports = {
                     if (savings < averages.averageAVG - sub_totals.totalAVG) savings = averages.averageAVG - sub_totals.totalAVG;
                     if (savings < averages.highAVG - sub_totals.totalHigh) savings = averages.highAVG - sub_totals.totalHigh;
 
-                    embed.addField("Component Cost", `Average: ${sub_totals.totalAVG.toFixed(0)} <:vaportrader:757350560755089460>\nHighest: ${sub_totals.totalHigh.toFixed(0)} <:platinum:752799138323628083>\nLowest: ${sub_totals.totalLow.toFixed(0)} <:platinum:752799138323628083>\nYou save up to: ${savings.toFixed(0)} <:vaportrader:757350560755089460>`, false);
+                    embed.addField("Component Cost", `Average: ${sub_totals.totalAVG.toFixed(0)} <:vaportrader:757687668522877009>\nHighest: ${sub_totals.totalHigh.toFixed(0)} <:platinum:757676262708871257>\nLowest: ${sub_totals.totalLow.toFixed(0)} <:platinum:757676262708871257>\nYou save up to: ${savings.toFixed(0)} <:vaportrader:757687668522877009>`, false);
                 }
                 if (modMode) {
                     let levels = {};
@@ -103,7 +103,7 @@ module.exports = {
                     Object.keys(levels).forEach(level => {
                         let lvlaverages = calc_avg(levels[level].prices, levels[level].orders);
                         if (level === "undefined") level = "MAX";
-                        let rankText = `Average: ${lvlaverages.averageAVG.toFixed(0)} <:vaportrader:757350560755089460>\nHigh: ${lvlaverages.highAVG.toFixed(0)} <:platinum:752799138323628083>\nLow: ${lvlaverages.lowAVG.toFixed(0)} <:platinum:752799138323628083>\nBuyers: ${formatNo(lvlaverages.buyVolumeTotal)}\nSellers: ${formatNo(lvlaverages.sellVolumeTotal)}\nUtilization*: ${formatNo(lvlaverages.marketCap.toFixed(0))}%\nPrice Trend: ${lvlaverages.ninetyDayTrend}`
+                        let rankText = `Average: ${lvlaverages.averageAVG.toFixed(0)} <:vaportrader:757687668522877009>\nHigh: ${lvlaverages.highAVG.toFixed(0)} <:platinum:757676262708871257>\nLow: ${lvlaverages.lowAVG.toFixed(0)} <:platinum:757676262708871257>\nBuyers: ${formatNo(lvlaverages.buyVolumeTotal)}\nSellers: ${formatNo(lvlaverages.sellVolumeTotal)}\nUtilization*: ${formatNo(lvlaverages.marketCap.toFixed(0))}%\nPrice Trend: ${lvlaverages.ninetyDayTrend}`
                         if (rankText.includes('Infinity%')) {
                             rankText = rankText.split('Infinity%').join('Infinite');
                         }
@@ -121,18 +121,17 @@ module.exports = {
                 item.avg_price = averages.averageAVG;
                 item.highest_price = averages.highAVG;
                 item.lowest_price = averages.lowAVG;
-                text = `90 day average: ${item.avg_price.toFixed(0)} <:vaportrader:757350560755089460>\n90 day high: ${item.highest_price.toFixed(0)} <:platinum:752799138323628083>\n90 day low: ${item.lowest_price.toFixed(0)} <:platinum:752799138323628083>\nOrders (buy/sell): ${formatNo(averages.buyVolumeTotal)} / ${formatNo(averages.sellVolumeTotal)}\nUtilization*: ${formatNo(averages.marketCap.toFixed(0))}%\nPrice Trend: ${averages.trend}\nPrice Trend (90 days): ${averages.ninetyDayTrend}\n[View on warframe.market](https://warframe.market/items/${item.url_name})`
+                text = `90 day average: ${item.avg_price.toFixed(0)} <:vaportrader:757687668522877009>\n90 day high: ${item.highest_price.toFixed(0)} <:platinum:757676262708871257>\n90 day low: ${item.lowest_price.toFixed(0)} <:platinum:757676262708871257>\nOrders (buy/sell): ${formatNo(averages.buyVolumeTotal)} / ${formatNo(averages.sellVolumeTotal)}\nUtilization*: ${formatNo(averages.marketCap.toFixed(0))}%\nPrice Trend: ${averages.trend}\nPrice Trend (90 days): ${averages.ninetyDayTrend}\n[View on warframe.market](https://warframe.market/items/${item.url_name})`
                 if (text.includes('Infinity%')) {
                     text = text.split('Infinity%').join('Infinite');
                 }
             }
 
-            embed.setDescription("__**Overall Statistics:**__\n" + text);
+            embed.setDescription(`[Visit Wiki](${item.wiki_link})\n__**Overall Statistics:**__\n` + text);
 
             message.channel.send(embed)
             message.channel.stopTyping()
-        }
-        ;
+        };
     },
     preflight: (message, args, client, dbm) => {
         return true;
@@ -141,7 +140,7 @@ module.exports = {
 
 
 function calc_avg(prices, orders) {
-    let trend = ":no_entry:";
+    let trend = "<:no_change:757557475246473276>";
     let trends = {
         up: 0,
         down: 0,
@@ -158,13 +157,13 @@ function calc_avg(prices, orders) {
         lowTotal += price.min_price;
         averageTotal += price.avg_price;
         if (price.avg_price > last_avg) {
-            trend = ":arrow_up:";
+            trend = "<:trend_up:757557475192078386>";
             trends.up += 1;
         } else if (price.avg_price === last_avg) {
-            trend = ":no_entry:";
+            trend = "<:no_change:757557475246473276>";
             trends.none += 1;
         } else {
-            trend = ":arrow_down:";
+            trend = "<:trend_down:757557475355394058>";
             trends.down += 1;
         }
         last_avg = price.avg_price;
@@ -188,7 +187,7 @@ function calc_avg(prices, orders) {
     if (trends.up > trends.down && trends.up > trends.none) {
         ninetyDayTrend = ":arrow_up:"
     } else if (trends.down > trends.up && trends.down > trends.none) {
-        ninetyDayTrend = ":arrow_down:"
+        ninetyDayTrend = "<:trend_down:757557475355394058>"
     } else if (trends.none > trends.up && trends.none > trends.down) {
         ninetyDayTrend = ":no_entry:"
     }

@@ -11,7 +11,8 @@ const knex = require('knex')({
 
 module.exports = {
     fuzzy_search_item,
-    countItems
+    countItems,
+    checkRelic
 }
 
 async function fuzzy_search_item(name) {
@@ -51,4 +52,19 @@ async function fuzzy_search_item(name) {
 async function countItems() {
     let raw_results = await knex.count('items.id').from('items').whereRaw(`items.tradable = TRUE`);
     return raw_results[0].count
+}
+
+async function makeList(user, name) {
+    await knex.insert({user_id}).into("wish_lists")
+}
+
+// insertRelics()
+// async function insertRelics() {
+//     let relics = require('../formatting.json').relics;
+//     await knex.insert(relics).into('relics');
+// }
+
+async function checkRelic(relic) {
+    let raw_results = await knex.select('relics.vaulted').from('relics').whereRaw(`relics.name = '${relic}'`);
+    return raw_results[0].vaulted;
 }

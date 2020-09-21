@@ -1,0 +1,900 @@
+{
+  "relics": [
+    {
+      "name": "Meso A1",
+      "vaulted": true
+    },
+    {
+      "name": "Meso A2",
+      "vaulted": true
+    },
+    {
+      "name": "Meso B1",
+      "vaulted": true
+    },
+    {
+      "name": "Meso B2",
+      "vaulted": true
+    },
+    {
+      "name": "Meso B3",
+      "vaulted": true
+    },
+    {
+      "name": "Meso B4",
+      "vaulted": true
+    },
+    {
+      "name": "Meso C1",
+      "vaulted": true
+    },
+    {
+      "name": "Meso C2",
+      "vaulted": true
+    },
+    {
+      "name": "Meso C3",
+      "vaulted": true
+    },
+    {
+      "name": "Meso C4",
+      "vaulted": true
+    },
+    {
+      "name": "Meso C5",
+      "vaulted": true
+    },
+    {
+      "name": "Meso D1",
+      "vaulted": true
+    },
+    {
+      "name": "Meso D2",
+      "vaulted": true
+    },
+    {
+      "name": "Meso D3",
+      "vaulted": true
+    },
+    {
+      "name": "Meso D4",
+      "vaulted": true
+    },
+    {
+      "name": "Meso E1",
+      "vaulted": true
+    },
+    {
+      "name": "Meso E2",
+      "vaulted": true
+    },
+    {
+      "name": "Meso E3",
+      "vaulted": true
+    },
+    {
+      "name": "Meso F1",
+      "vaulted": true
+    },
+    {
+      "name": "Meso F2",
+      "vaulted": true
+    },
+    {
+      "name": "Meso F3",
+      "vaulted": true
+    },
+    {
+      "name": "Meso G1",
+      "vaulted": true
+    },
+    {
+      "name": "Meso H1",
+      "vaulted": true
+    },
+    {
+      "name": "Meso K1",
+      "vaulted": true
+    },
+    {
+      "name": "Meso K2",
+      "vaulted": true
+    },
+    {
+      "name": "Meso L1",
+      "vaulted": true
+    },
+    {
+      "name": "Meso M1",
+      "vaulted": true
+    },
+    {
+      "name": "Meso M2",
+      "vaulted": true
+    },
+    {
+      "name": "Meso M3",
+      "vaulted": true
+    },
+    {
+      "name": "Meso N1",
+      "vaulted": true
+    },
+    {
+      "name": "Meso N2",
+      "vaulted": true
+    },
+    {
+      "name": "Meso N3",
+      "vaulted": true
+    },
+    {
+      "name": "Meso N4",
+      "vaulted": true
+    },
+    {
+      "name": "Meso N5",
+      "vaulted": true
+    },
+    {
+      "name": "Meso N6",
+      "vaulted": true
+    },
+    {
+      "name": "Meso N7",
+      "vaulted": true
+    },
+    {
+      "name": "Meso N8",
+      "vaulted": true
+    },
+    {
+      "name": "Meso O1",
+      "vaulted": true
+    },
+    {
+      "name": "Meso O2",
+      "vaulted": true
+    },
+    {
+      "name": "Meso O3",
+      "vaulted": true
+    },
+    {
+      "name": "Meso O4",
+      "vaulted": true
+    },
+    {
+      "name": "Meso P1",
+      "vaulted": true
+    },
+    {
+      "name": "Meso R1",
+      "vaulted": true
+    },
+    {
+      "name": "Meso R2",
+      "vaulted": true
+    },
+    {
+      "name": "Meso R3",
+      "vaulted": true
+    },
+    {
+      "name": "Meso S1",
+      "vaulted": true
+    },
+    {
+      "name": "Meso S2",
+      "vaulted": true
+    },
+    {
+      "name": "Meso S3",
+      "vaulted": true
+    },
+    {
+      "name": "Meso S4",
+      "vaulted": true
+    },
+    {
+      "name": "Meso S5",
+      "vaulted": true
+    },
+    {
+      "name": "Meso S6",
+      "vaulted": true
+    },
+    {
+      "name": "Meso S7",
+      "vaulted": true
+    },
+    {
+      "name": "Meso S8",
+      "vaulted": true
+    },
+    {
+      "name": "Meso S9",
+      "vaulted": true
+    },
+    {
+      "name": "Meso T1",
+      "vaulted": true
+    },
+    {
+      "name": "Meso T2",
+      "vaulted": true
+    },
+    {
+      "name": "Meso T3",
+      "vaulted": true
+    },
+    {
+      "name": "Meso V1",
+      "vaulted": true
+    },
+    {
+      "name": "Meso V2",
+      "vaulted": true
+    },
+    {
+      "name": "Meso V3",
+      "vaulted": true
+    },
+    {
+      "name": "Meso V4",
+      "vaulted": true
+    },
+    {
+      "name": "Meso V5",
+      "vaulted": true
+    },
+    {
+      "name": "Meso V6",
+      "vaulted": true
+    },
+    {
+      "name": "Meso W1",
+      "vaulted": true
+    },
+    {
+      "name": "Meso Z1",
+      "vaulted": true
+    },
+    {
+      "name": "Meso Z2",
+      "vaulted": true
+    },
+    {
+      "name": "Meso Z3",
+      "vaulted": true
+    },
+    {
+      "name": "Neo A1",
+      "vaulted": false
+    },
+    {
+      "name": "Neo A2",
+      "vaulted": false
+    },
+    {
+      "name": "Neo A4",
+      "vaulted": false
+    },
+    {
+      "name": "Neo B1",
+      "vaulted": false
+    },
+    {
+      "name": "Neo B2",
+      "vaulted": false
+    },
+    {
+      "name": "Neo B3",
+      "vaulted": false
+    },
+    {
+      "name": "Neo B4",
+      "vaulted": false
+    },
+    {
+      "name": "Neo B5",
+      "vaulted": false
+    },
+    {
+      "name": "Neo C1",
+      "vaulted": false
+    },
+    {
+      "name": "Neo D1",
+      "vaulted": false
+    },
+    {
+      "name": "Neo E1",
+      "vaulted": false
+    },
+    {
+      "name": "Neo F1",
+      "vaulted": false
+    },
+    {
+      "name": "Neo G1",
+      "vaulted": false
+    },
+    {
+      "name": "Neo G2",
+      "vaulted": false
+    },
+    {
+      "name": "Neo G3",
+      "vaulted": false
+    },
+    {
+      "name": "Neo H1",
+      "vaulted": false
+    },
+    {
+      "name": "Neo H2",
+      "vaulted": false
+    },
+    {
+      "name": "Neo I1",
+      "vaulted": false
+    },
+    {
+      "name": "Neo K1",
+      "vaulted": false
+    },
+    {
+      "name": "Neo K2",
+      "vaulted": false
+    },
+    {
+      "name": "Neo L1",
+      "vaulted": false
+    },
+    {
+      "name": "Neo M1",
+      "vaulted": false
+    },
+    {
+      "name": "Neo M2",
+      "vaulted": false
+    },
+    {
+      "name": "Neo N1",
+      "vaulted": false
+    },
+    {
+      "name": "Neo N2",
+      "vaulted": false
+    },
+    {
+      "name": "Neo N3",
+      "vaulted": false
+    },
+    {
+      "name": "Neo N4",
+      "vaulted": false
+    },
+    {
+      "name": "Neo N5",
+      "vaulted": false
+    },
+    {
+      "name": "Neo N6",
+      "vaulted": false
+    },
+    {
+      "name": "Neo N7",
+      "vaulted": false
+    },
+    {
+      "name": "Neo N8",
+      "vaulted": false
+    },
+    {
+      "name": "Neo N9",
+      "vaulted": false
+    },
+    {
+      "name": "Neo N10",
+      "vaulted": false
+    },
+    {
+      "name": "Neo N11",
+      "vaulted": false
+    },
+    {
+      "name": "Neo P1",
+      "vaulted": false
+    },
+    {
+      "name": "Neo R1",
+      "vaulted": false
+    },
+    {
+      "name": "Neo R2",
+      "vaulted": false
+    },
+    {
+      "name": "Neo R3",
+      "vaulted": false
+    },
+    {
+      "name": "Neo S1",
+      "vaulted": false
+    },
+    {
+      "name": "Neo S2",
+      "vaulted": false
+    },
+    {
+      "name": "Neo S3",
+      "vaulted": false
+    },
+    {
+      "name": "Neo S5",
+      "vaulted": false
+    },
+    {
+      "name": "Neo S6",
+      "vaulted": false
+    },
+    {
+      "name": "Neo S7",
+      "vaulted": false
+    },
+    {
+      "name": "Neo S8",
+      "vaulted": false
+    },
+    {
+      "name": "Neo S9",
+      "vaulted": false
+    },
+    {
+      "name": "Neo S10",
+      "vaulted": false
+    },
+    {
+      "name": "Neo S11",
+      "vaulted": false
+    },
+    {
+      "name": "Neo S12",
+      "vaulted": false
+    },
+    {
+      "name": "Neo S13",
+      "vaulted": false
+    },
+    {
+      "name": "Neo T1",
+      "vaulted": false
+    },
+    {
+      "name": "Neo V1",
+      "vaulted": false
+    },
+    {
+      "name": "Neo V2",
+      "vaulted": false
+    },
+    {
+      "name": "Neo V3",
+      "vaulted": false
+    },
+    {
+      "name": "Neo V4",
+      "vaulted": false
+    },
+    {
+      "name": "Neo V5",
+      "vaulted": false
+    },
+    {
+      "name": "Neo V6",
+      "vaulted": false
+    },
+    {
+      "name": "Neo V7",
+      "vaulted": false
+    },
+    {
+      "name": "Neo V8",
+      "vaulted": false
+    },
+    {
+      "name": "Neo Z1",
+      "vaulted": false
+    },
+    {
+      "name": "Neo Z2",
+      "vaulted": false
+    },
+    {
+      "name": "Neo Z3",
+      "vaulted": false
+    },
+    {
+      "name": "Neo Z4",
+      "vaulted": false
+    },
+    {
+      "name": "Axi A1",
+      "vaulted": false
+    },
+    {
+      "name": "Axi A3",
+      "vaulted": false
+    },
+    {
+      "name": "Axi A4",
+      "vaulted": false
+    },
+    {
+      "name": "Axi A6",
+      "vaulted": false
+    },
+    {
+      "name": "Axi A7",
+      "vaulted": false
+    },
+    {
+      "name": "Axi A8",
+      "vaulted": false
+    },
+    {
+      "name": "Axi A9",
+      "vaulted": false
+    },
+    {
+      "name": "Axi B1",
+      "vaulted": false
+    },
+    {
+      "name": "Axi B2",
+      "vaulted": false
+    },
+    {
+      "name": "Axi C1",
+      "vaulted": false
+    },
+    {
+      "name": "Axi C2",
+      "vaulted": false
+    },
+    {
+      "name": "Axi C3",
+      "vaulted": false
+    },
+    {
+      "name": "Axi C4",
+      "vaulted": false
+    },
+    {
+      "name": "Axi D1",
+      "vaulted": false
+    },
+    {
+      "name": "Axi D2",
+      "vaulted": false
+    },
+    {
+      "name": "Axi E1",
+      "vaulted": false
+    },
+    {
+      "name": "Axi E2",
+      "vaulted": false
+    },
+    {
+      "name": "Axi G1",
+      "vaulted": false
+    },
+    {
+      "name": "Axi G2",
+      "vaulted": false
+    },
+    {
+      "name": "Axi G3",
+      "vaulted": false
+    },
+    {
+      "name": "Axi G4",
+      "vaulted": false
+    },
+    {
+      "name": "Axi H1",
+      "vaulted": false
+    },
+    {
+      "name": "Axi H2",
+      "vaulted": false
+    },
+    {
+      "name": "Axi H3",
+      "vaulted": false
+    },
+    {
+      "name": "Axi H4",
+      "vaulted": false
+    },
+    {
+      "name": "Axi K1",
+      "vaulted": false
+    },
+    {
+      "name": "Axi K2",
+      "vaulted": false
+    },
+    {
+      "name": "Axi K3",
+      "vaulted": false
+    },
+    {
+      "name": "Axi K4",
+      "vaulted": false
+    },
+    {
+      "name": "Axi K5",
+      "vaulted": false
+    },
+    {
+      "name": "Axi L1",
+      "vaulted": false
+    },
+    {
+      "name": "Axi L2",
+      "vaulted": false
+    },
+    {
+      "name": "Axi L3",
+      "vaulted": false
+    },
+    {
+      "name": "Axi L4",
+      "vaulted": false
+    },
+    {
+      "name": "Axi L5",
+      "vaulted": false
+    },
+    {
+      "name": "Axi M1",
+      "vaulted": false
+    },
+    {
+      "name": "Axi N1",
+      "vaulted": false
+    },
+    {
+      "name": "Axi N2",
+      "vaulted": false
+    },
+    {
+      "name": "Axi N3",
+      "vaulted": false
+    },
+    {
+      "name": "Axi N4",
+      "vaulted": false
+    },
+    {
+      "name": "Axi N5",
+      "vaulted": false
+    },
+    {
+      "name": "Axi N6",
+      "vaulted": false
+    },
+    {
+      "name": "Axi O1",
+      "vaulted": false
+    },
+    {
+      "name": "Axi O2",
+      "vaulted": false
+    },
+    {
+      "name": "Axi O3",
+      "vaulted": false
+    },
+    {
+      "name": "Axi O4",
+      "vaulted": false
+    },
+    {
+      "name": "Axi P1",
+      "vaulted": false
+    },
+    {
+      "name": "Axi P2",
+      "vaulted": false
+    },
+    {
+      "name": "Axi P3",
+      "vaulted": false
+    },
+    {
+      "name": "Axi R1",
+      "vaulted": false
+    },
+    {
+      "name": "Axi R2",
+      "vaulted": false
+    },
+    {
+      "name": "Axi R3",
+      "vaulted": false
+    },
+    {
+      "name": "Axi S1",
+      "vaulted": false
+    },
+    {
+      "name": "Axi S2",
+      "vaulted": false
+    },
+    {
+      "name": "Axi S3",
+      "vaulted": false
+    },
+    {
+      "name": "Axi S4",
+      "vaulted": false
+    },
+    {
+      "name": "Axi S5",
+      "vaulted": false
+    },
+    {
+      "name": "Axi S6",
+      "vaulted": false
+    },
+    {
+      "name": "Axi T1",
+      "vaulted": false
+    },
+    {
+      "name": "Axi T2",
+      "vaulted": false
+    },
+    {
+      "name": "Axi T3",
+      "vaulted": false
+    },
+    {
+      "name": "Axi T5",
+      "vaulted": false
+    },
+    {
+      "name": "Axi V1",
+      "vaulted": false
+    },
+    {
+      "name": "Axi V2",
+      "vaulted": false
+    },
+    {
+      "name": "Axi V3",
+      "vaulted": false
+    },
+    {
+      "name": "Axi V4",
+      "vaulted": false
+    },
+    {
+      "name": "Axi V5",
+      "vaulted": false
+    },
+    {
+      "name": "Axi V6",
+      "vaulted": false
+    },
+    {
+      "name": "Axi V7",
+      "vaulted": false
+    },
+    {
+      "name": "Axi V9",
+      "vaulted": false
+    },
+    {
+      "name": "Meso D5",
+      "vaulted": true
+    },
+    {
+      "name": "Meso E4",
+      "vaulted": true
+    },
+    {
+      "name": "Meso I1",
+      "vaulted": true
+    },
+    {
+      "name": "Meso K3",
+      "vaulted": true
+    },
+    {
+      "name": "Meso N9",
+      "vaulted": true
+    },
+    {
+      "name": "Meso N10",
+      "vaulted": true
+    },
+    {
+      "name": "Meso P2",
+      "vaulted": true
+    },
+    {
+      "name": "Meso P3",
+      "vaulted": true
+    },
+    {
+      "name": "Neo A3",
+      "vaulted": true
+    },
+    {
+      "name": "Neo I2",
+      "vaulted": true
+    },
+    {
+      "name": "Neo M3",
+      "vaulted": true
+    },
+    {
+      "name": "Neo N12",
+      "vaulted": true
+    },
+    {
+      "name": "Neo R4",
+      "vaulted": true
+    },
+    {
+      "name": "Neo T2",
+      "vaulted": true
+    },
+    {
+      "name": "Neo T3",
+      "vaulted": true
+    },
+    {
+      "name": "Neo Z5",
+      "vaulted": true
+    },
+    {
+      "name": "Axi A10",
+      "vaulted": true
+    },
+    {
+      "name": "Axi A11",
+      "vaulted": true
+    },
+    {
+      "name": "Axi B3",
+      "vaulted": true
+    },
+    {
+      "name": "Axi B4",
+      "vaulted": true
+    },
+    {
+      "name": "Axi C5",
+      "vaulted": true
+    },
+    {
+      "name": "Axi S7",
+      "vaulted": true
+    },
+    {
+      "name": "Axi T4",
+      "vaulted": true
+    },
+    {
+      "name": "Axi W1",
+      "vaulted": true
+    }
+  ]
+}
