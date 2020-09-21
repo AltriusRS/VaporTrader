@@ -17,6 +17,14 @@ module.exports = {
         message.channel.startTyping()
         let search_results = await dbm.fuzzy_search_item(args.join(" ").split('\'').join('\\\''));
         let item = search_results[0];
+        if (!item.item_name.includes('Set')) {
+            for (var i = 0; i < search_results.length; i++) {
+                let s = search_results[i];
+                if (s.item_name.includes('Set')) {
+                    item = s;
+                }
+            }
+        }
         if (item === undefined) {
             message.channel.send("Unknown Item")
             message.channel.stopTyping()
@@ -34,17 +42,24 @@ module.exports = {
                 let info = (await superagent.get(`https://api.warframe.market/v1/items/${item.url_name}`)).body.payload;
                 if (info.item.items_in_set[0].tags.includes('mod')) modMode = true;
                 if (info.item.items_in_set.length > 1) {
+                    let sub_totals = {
+                        totalAVG: 0,
+                        totalHigh: 0,
+                        totalLow: 0
+                    };
                     for (let i = 0; i < info.item.items_in_set.length; i++) {
                         let subItem = info.item.items_in_set[i];
                         let title = subItem.en.item_name;
                         let text = `[View Market](https://warframe.market/items/${subItem.url_name})`;
                         let subavg = undefined;
-
                         if (!subItem.set_root) {
                             try {
                                 let subPrices = (await superagent.get(`https://api.warframe.market/v1/items/${subItem.url_name}/statistics`)).body.payload;
                                 let subOrders = (await superagent.get(`https://api.warframe.market/v1/items/${subItem.url_name}/orders`)).body.payload.orders;
                                 subavg = calc_avg(subPrices.statistics_closed['90days'], subOrders);
+                                sub_totals.totalAVG += subavg.averageAVG;
+                                sub_totals.totalHigh += subavg.highAVG;
+                                sub_totals.totalLow += subavg.lowAVG;
                             } catch (e) {
                                 console.log(e);
                             }
@@ -54,6 +69,7 @@ module.exports = {
                             }
                         }
                     }
+                    embed.addField("Component Cost", `Average: ${sub_totals.totalAVG.toFixed(0)} <:vaportrader:757350560755089460>\nHighest: ${sub_totals.totalHigh.toFixed(0)} <:platinum:752799138323628083>\nLowest: ${sub_totals.totalLow.toFixed(0)} <:platinum:752799138323628083>`, false);
                 }
                 embed.setThumbnail(`https://warframe.market/static/assets/${info.item.items_in_set[0].icon}`);
                 let prices = (await superagent.get(`https://api.warframe.market/v1/items/${item.url_name}/statistics`)).body.payload;
@@ -101,7 +117,7 @@ module.exports = {
                 item.avg_price = averages.averageAVG;
                 item.highest_price = averages.highAVG;
                 item.lowest_price = averages.lowAVG;
-                text = `90 day average: ${item.avg_price.toFixed(0)} <:vaportrader:757350560755089460>\n90 day high: ${item.highest_price.toFixed(0)} <:platinum:752799138323628083>\n90 day low: ${item.lowest_price.toFixed(0)} <:platinum:752799138323628083>\nOrders (buy/sell): ${formatNo(averages.buyVolumeTotal)} / ${formatNo(averages.sellVolumeTotal)}\nSupply % of demand: ${formatNo(averages.marketCap.toFixed(0))}%\nPrice Trend: ${averages.trend}\nPrice Trend (90 days): ${averages.ninetyDayTrend}\n[View on warframe.market](https://warframe.market/items/${item.url_name})`
+                text = `90 day average: ${item.avg_price.toFixed(0)} <:vaportrader:757350560755089460>\n90 day high: ${item.highest_price.toFixed(0)} <:platinum:752799138323628083>\n90 day low: ${item.lowest_price.toFixed(0)} <:platinum:752799138323628083>\nOrders (buy/sell): ${formatNo(averages.buyVolumeTotal)} / ${formatNo(averages.sellVolumeTotal)}\nUtilization*: ${formatNo(averages.marketCap.toFixed(0))}%\nPrice Trend: ${averages.trend}\nPrice Trend (90 days): ${averages.ninetyDayTrend}\n[View on warframe.market](https://warframe.market/items/${item.url_name})`
                 if (text.includes('Infinity%')) {
                     text = text.split('Infinity%').join('Infinite');
                 }
@@ -113,8 +129,7 @@ module.exports = {
             message.channel.stopTyping()
         }
         ;
-    }
-    ,
+    },
     preflight: (message, args, client, dbm) => {
         return true;
     }
