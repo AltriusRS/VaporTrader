@@ -38,6 +38,7 @@ module.exports = {
             Version: ${client.botVersion}
             
             [Invite Link](https://discord.com/api/oauth2/authorize?client_id=752258474695590019&permissions=289792&scope=bot)
+            [Source Code](https://github.com/fatalcenturion/VaporTrader)
             
             This bot is not affiliated with Digital Extremes:tm: or warframe.market:copyright:`);
             m1.edit(embed);
