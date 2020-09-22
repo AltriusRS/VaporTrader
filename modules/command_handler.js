@@ -1,7 +1,7 @@
 const fs = require('fs');
 const dbm = require('./database');
 const config = require('../config.json');
-const commands = {}
+let commands = {}
 readComs()
 
 async function handle(message, client) {
@@ -29,6 +29,10 @@ async function handle(message, client) {
                     console.log(e);
                 }
             }
+        } else if(command == "reload" && message.author.id === config.ownerID){
+            commands = {};
+            readComs();
+            message.react(client.emojis.resolve("409802959556182026"));
         }
     }
 }

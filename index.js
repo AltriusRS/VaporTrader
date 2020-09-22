@@ -6,7 +6,7 @@ client.commandsRan = 0;
 client.botVersion = config.version;
 client.login(config.token);
 
-client.once('ready', () => {
+client.on('ready', () => {
     console.log("PriceSpy is ready")
     client.user.setPresence({
         game: {
