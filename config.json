@@ -1,0 +1,15 @@
+{
+  "prefix": "!",
+  "token": "NzUyMjU4NDc0Njk1NTkwMDE5.X1VBTA.QVxbAaOFp-Wqmtm-rrYFAnsMXQY",
+  "version": "0.1.8",
+  "dev": true,
+  "ownerID": "180639594017062912",
+  "languagePacks": "./translations",
+  "database": {
+    "user": "news_bot",
+    "host": "10.0.0.104",
+    "database": "price_spy",
+    "password": "tachi",
+    "port": 5432
+  }
+}
