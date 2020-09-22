@@ -1,20 +1,30 @@
 const fs = require('fs');
 const dbm = require('./database');
+const config = require('../config.json');
 const commands = {}
 readComs()
 
 async function handle(message, client) {
     if (message.author.bot) return;
-    if (message.content.toLocaleLowerCase().startsWith('ps!')) {
-        message.content = message.content.split("ps!").join("");
+    if (message.content.toLocaleLowerCase().startsWith(config.prefix)) {
+        message.content = message.content.split(config.prefix).join("");
         let args = message.content.split(" ");
         let command = args.shift().toLowerCase();
         let cmd = commands[command];
         if (cmd !== null && cmd !== undefined) {
             if (cmd.preflight(message, args, client, dbm)) {
                 try {
-                    cmd.run(message, args, client, dbm);
-                    client.emit("commandSuccess123");
+                    if (args[0]) {
+                        if (args[0].toLowerCase() === "help" || args[0].toLowerCase() === "h") {
+                            cmd.help(message, client, config);
+                        } else {
+                            cmd.run(message, args, client, dbm, commands, config);
+                            client.emit("commandSuccess123");
+                        }
+                    } else {
+                        cmd.run(message, args, client, dbm, commands, config);
+                        client.emit("commandSuccess123");
+                    }
                 } catch (e) {
                     console.log(e);
                 }

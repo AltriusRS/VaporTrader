@@ -1,13 +1,19 @@
+const config = require('./config.json')
 const handle = require('./modules/command_handler');
 const Discord = require('discord.js');
 const client = new Discord.Client();
 client.commandsRan = 0;
-client.botVersion = "0.1.8"
-client.login("NzUyMjU4NDc0Njk1NTkwMDE5.X1VBTA.QVxbAaOFp-Wqmtm-rrYFAnsMXQY");
+client.botVersion = config.version;
+client.login(config.token);
 
 client.once('ready', () => {
     console.log("PriceSpy is ready")
-    client.user.setStatus()
+    client.user.setPresence({
+        game: {
+            name: 'with the market',
+            type: "PLAYING",
+        }
+    });
 })
 
 client.on('message', (message) => {

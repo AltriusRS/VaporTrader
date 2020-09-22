@@ -1,16 +1,24 @@
 const Discord = require('discord.js');
 const superagent = require('superagent');
+const config = require('../config.json')
+const info = {
+    name: "search",
+    aliases: ["s", "f"],
+    public: true,
+    description: `A commmand that takes your input and returns a set of items matching your description.\nExample: \`$$PREFIXsearch Soma Prime\``,
+}
 
 module.exports = {
-    name: "search",
-    aliases: ["fs", "fuzzy"],
-    description: "A commmand that takes your input and returns a set of items matching your description. example: `ps!search Soma Prime`",
-    help: (message, client) => {
+    name: info.name,
+    aliases: info.aliases,
+    public: info.public,
+    description: info.description,
+    help: (message, client, config) => {
         let embed = new Discord.MessageEmbed()
             .setColor("#c06ed9")
-            .setTitle(module.exports.name)
-            .setDescription(module.exports.description)
-            .addField("Aliases:", `\`${module.exports.name}\` \`${module.exports.aliases.join("`, `")}\``)
+            .setTitle(info.name)
+            .setDescription(info.description.split("$$PREFIX").join(config.prefix))
+            .addField("Aliases:", `\`${info.name}\`, \`${info.aliases.join("`, `")}\``)
         message.channel.send(embed)
     },
     run: async (message, args, client, dbm) => {

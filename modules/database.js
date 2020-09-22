@@ -1,12 +1,7 @@
+const config = require('../config.json');
 const knex = require('knex')({
     client: 'pg',
-    connection: {
-        user: 'news_bot',
-        host: '10.0.0.104',
-        database: 'price_spy',
-        password: 'tachi',
-        port: 5432
-    }
+    connection: config.database
 });
 
 module.exports = {

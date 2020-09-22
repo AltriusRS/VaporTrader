@@ -1,16 +1,24 @@
 const Discord = require('discord.js');
 const superagent = require('superagent');
+const config = require('../config.json')
+const info = {
+    name: "drops",
+    aliases: ["d", "drop"],
+    public: true,
+    description: `Helps find known drop sources for an item.\nExample: \`$$PREFIXdrops Ninkondi Prime Chain\``,
+}
 
 module.exports = {
-    name: "drops",
-    aliases: ["dr", "drop"],
-    description: "Helps find known drop sources for an ite. Example: `vt!drops Ninkondi Prime Chain`",
-    help: (message, client) => {
+    name: info.name,
+    aliases: info.aliases,
+    public: info.public,
+    description: info.description,
+    help: (message, client, config) => {
         let embed = new Discord.MessageEmbed()
             .setColor("#c06ed9")
-            .setTitle(module.exports.name)
-            .setDescription(module.exports.description)
-            .addField("Aliases:", `\`${module.exports.name}\` \`${module.exports.aliases.join("`, `")}\``)
+            .setTitle(info.name)
+            .setDescription(info.description.split("$$PREFIX").join(config.prefix))
+            .addField("Aliases:", `\`${info.name}\`, \`${info.aliases.join("`, `")}\``)
         message.channel.send(embed)
     },
     run: async (message, args, client, dbm) => {
@@ -55,7 +63,7 @@ module.exports = {
 function formatNo(x) {
     let parts = x.toString().split(".");
     parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    return parts.join(".");
+    return parts.join(",");
 }
 
 

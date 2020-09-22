@@ -1,16 +1,23 @@
 const Discord = require('discord.js');
 const superagent = require('superagent');
-
-module.exports = {
+const info = {
     name: "info",
     aliases: ["i"],
-    description: "Information about the bot",
-    help: (message, client) => {
+    public: true,
+    description: "Information about the bot"
+}
+
+module.exports = {
+    name: info.name,
+    aliases: info.aliases,
+    public: info.public,
+    description: info.description,
+    help: (message, client, config) => {
         let embed = new Discord.MessageEmbed()
             .setColor("#c06ed9")
-            .setTitle(module.exports.name)
-            .setDescription(module.exports.description)
-            .addField("Aliases:", `\`${module.exports.name}\` \`${module.exports.aliases.join("`, `")}\``)
+            .setTitle(info.name)
+            .setDescription(info.description.split("$$PREFIX").join(config.prefix))
+            .addField("Aliases:", `\`${info.name}\`, \`${info.aliases.join("`, `")}\``)
         message.channel.send(embed)
     },
     run: async (message, args, client, dbm) => {
@@ -22,7 +29,7 @@ module.exports = {
             Latency: Calculating ms
             
             This bot is not affiliated with Digital Extremes:tm: or warframe.market:copyright:`);
-        message.channel.send(embed).then(async(m1) => {
+        message.channel.send(embed).then(async (m1) => {
             embed.setDescription(`Servers: ${formatNo(client.guilds.cache.size)}
             Commands Completed: ${formatNo(client.commandsRan)}
             Latency: ${formatNo(m1.createdTimestamp - message.createdTimestamp)} ms
@@ -44,5 +51,5 @@ module.exports = {
 function formatNo(x) {
     let parts = x.toString().split(".");
     parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    return parts.join(".");
+    return parts.join(",");
 }
