@@ -3,7 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/pricespy.iml" filepath="$PROJECT_DIR$/.idea/pricespy.iml" />
-      <module fileurl="file://$PROJECT_DIR$/../vaportrader/vaportrader/.idea/vaportrader.iml" filepath="$PROJECT_DIR$/../vaportrader/vaportrader/.idea/vaportrader.iml" />
     </modules>
   </component>
 </project>
