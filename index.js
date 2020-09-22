@@ -8,12 +8,7 @@ client.login(config.token);
 
 client.on('ready', () => {
     console.log("PriceSpy is ready")
-    client.user.setPresence({
-        game: {
-            name: 'with the market',
-            type: "PLAYING",
-        }
-    });
+    client.user.setActivity(`with 3,000+ items`)
 })
 
 client.on('message', (message) => {
