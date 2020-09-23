@@ -44,6 +44,7 @@ async function pull() {
       await sleep(1000);
     }
   }
+  await fs.writeFileSync('./itemsdb.json', JSON.stringify(json));
 }
 
 
