@@ -25,18 +25,19 @@ module.exports = {
         message.channel.startTyping()
         let search_results = await dbm.fuzzy_search_item(args.join(" ").split('\'').join('\\\''));
         let item = search_results[0];
-        if (!item.item_name.includes('Set')) {
-            for (var i = 0; i < search_results.length; i++) {
-                let s = search_results[i];
-                if (s.item_name.includes('Set')) {
-                    item = s;
-                }
-            }
-        }
+
         if (item === undefined) {
             message.channel.send("Unknown Item")
             message.channel.stopTyping()
         } else {
+            if (!item.item_name.includes('Set')) {
+                for (var i = 0; i < search_results.length; i++) {
+                    let s = search_results[i];
+                    if (s.item_name.includes('Set')) {
+                        item = s;
+                    }
+                }
+            }
             let embed = new Discord.MessageEmbed()
                 .setColor("#c06ed9")
                 .setTitle(`Price Information - ${item.item_name}`)
