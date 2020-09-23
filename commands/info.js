@@ -24,23 +24,9 @@ module.exports = {
         let embed = new Discord.MessageEmbed()
             .setColor("#c06ed9")
             .setTitle(`Information`)
-            .setDescription(`Servers: ${formatNo(client.guilds.cache.size)}
-            Commands Completed: ${formatNo(client.commandsRan)}
-            Latency: Calculating ms
-            
-            This bot is not affiliated with Digital Extremes:tm: or warframe.market:copyright:`);
+            .setDescription(`Servers: ${formatNo(client.guilds.cache.size)}\nCommands Completed: ${formatNo(client.commandsRan)}\nLatency: Calculating ms\n\nThis bot is not affiliated with Digital Extremes:tm: or warframe.market:copyright:`);
         message.channel.send(embed).then(async (m1) => {
-            embed.setDescription(`Servers: ${formatNo(client.guilds.cache.size)}
-            Commands Completed: ${formatNo(client.commandsRan)}
-            Latency: ${formatNo(m1.createdTimestamp - message.createdTimestamp)} ms
-            Tradable Items: ${formatNo(await dbm.countItems())}
-            Developed by: Altrius#0420
-            Version: ${client.botVersion}
-            
-            [Invite Link](https://discord.com/api/oauth2/authorize?client_id=752258474695590019&permissions=289792&scope=bot)
-            [Source Code](https://github.com/fatalcenturion/VaporTrader)
-            
-            This bot is not affiliated with Digital Extremes:tm: or warframe.market:copyright:`);
+            embed.setDescription(`Servers: ${formatNo(client.guilds.cache.size)}\nCommands Completed: ${formatNo(client.commandsRan)}\nLatency: ${formatNo(m1.createdTimestamp - message.createdTimestamp)} ms\nTradable Items: ${formatNo(await dbm.countItems())}\nDeveloped by: Altrius#0420\nVersion: ${client.botVersion}\n\n[Invite Link](https://discord.com/api/oauth2/authorize?client_id=752258474695590019&permissions=289792&scope=bot)\n[Source Code](https://github.com/fatalcenturion/VaporTrader)\n\nThis bot is not affiliated with Digital Extremes:tm: or warframe.market:copyright:`);
             m1.edit(embed);
         });
     },
