@@ -1,0 +1,18 @@
+{
+  "prefix": "1",
+  "token": "NzUyMjU4NDc0Njk1NTkwMDE5.X1VBTA.QVxbAaOFp-Wqmtm-rrYFAnsMXQY",
+  "version": "0.5.1 (Alpha)",
+  "dev": true,
+  "ownerID": "180639594017062912",
+  "languagePacks": "./translations",
+  "database": {
+    "user": "news_bot",
+    "host": "10.0.0.102",
+    "database": "vapor_trader_dev",
+    "password": "tachi",
+    "port": 5432
+  },
+  "urls": {
+    "base": "https://api.warframe.market/v1"
+  }
+}
