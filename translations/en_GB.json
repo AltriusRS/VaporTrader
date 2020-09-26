@@ -9,6 +9,14 @@
     "help": {
       "titleText": "some text"
     },
+    "search": {
+      "title": "Search Results",
+      "footer": "These prices are not indicative of current trade value, they are averages over a 3 month period.\nPlease keep this in mind.",
+      "descriptions": {
+        "lessThan9": "Your search for `$SEARCH_TERM` returned $RESULT_COUNT results",
+        "moreThan9": "Your search for `$SEARCH_TERM` returned $RESULT_COUNT results, showing results 1 - 9."
+      }
+    },
     "credits": {
       "help": {
       },

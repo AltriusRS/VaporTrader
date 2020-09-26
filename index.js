@@ -8,6 +8,7 @@ let platforms = ["pc", "ps4", "xbox", "switch"];
 client.login(config.token);
 client.on('ready', async () => {
     console.log(`Vapor Trader - ${config.version}\nConnecting to feeds`)
+    await client.user.setActivity(`with ${await dbm.countItems()} items`)
     alertManager.start(platforms, client, dbm);
 })
 
