@@ -1,5 +1,6 @@
 const config = require('./config.json');
 const Discord = require('discord.js');
+const commands = require('./modules/commands');
 const dbm = (require('./modules/database').new(config));
 const client = new Discord.Client({shards: "auto"});
 const alertManager = require('./modules/alerts')
@@ -12,8 +13,7 @@ client.on('ready', () => {
 
 client.on('message', async (message) => {
     if (message.author.bot) return;
-    let memberConfig = await dbm.getUserConfig(message.author);
-    await memberConfig.getWishLists();
+    commands.handle(message, client, dbm);
 })
 
 client.on('priceAlert', (alerts, info, buy) => {

@@ -29,6 +29,15 @@ class DBM {
         this.pool = new Pool(config.database);
     }
 
+    async countItems() {
+        return new Promise((resolve, reject) => {
+            this.pool.query(`SELECT COUNT(id) AS "total" FROM general.items`, async (err, data) => {
+                if (err) reject(err);
+                resolve(data.rows[0].total);
+            })
+        })
+    }
+
     async getPriceAlerts(raw_item, price, buy, platform) {
         return new Promise((resolve, reject) => {
             if (buy) {
