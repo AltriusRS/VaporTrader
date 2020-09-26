@@ -1,7 +1,17 @@
 {
   "commands": {
     "help": {
-      "titleText":
+      "titleText": "some text"
+    },
+    "credits": {
+      "titleText": "Credits",
+      "description": "These awesome people are all the ones you should really be thanking for making this bot possible, without their help, feedback, and suggestions this bot would not be anywhere close to as good as it has become.",
+      "field1": "Emoji and Icons:",
+      "field2": "Design:",
+      "field3": {
+        "title": "Backend:",
+        "description": "The whole 42Bytes team for having an amazing API for me to draw data from."
+      }
     }
   }
 }

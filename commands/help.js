@@ -20,7 +20,7 @@ module.exports = {
             .addField("Aliases:", `\`${info.name}\`, \`${info.aliases.join("`, `")}\``)
         message.channel.send(embed)
     },
-    run: async (message, args, client, dbm, commands, config) => {
+    run: async (pack, message, args, client, dbm, commands, config) => {
         let embed = new Discord.MessageEmbed()
             .setColor("#c06ed9")
             .setTitle(`Help`)

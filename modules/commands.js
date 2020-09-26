@@ -15,24 +15,26 @@ async function handle(message, client, dbm) {
         if (cmd !== null && cmd !== undefined) {
             if (cmd.preflight(message, args, client, dbm)) {
                 try {
-                    let userConfig = await dbm.getUserConfig(nessage.author);
-                    console.log(useConfig.language)
+                    let userConfig = await dbm.getUserConfig(message.author);
+                    let pack = languagePacks[userConfig.language];
+                    pack = pack !== undefined ? pack : languagePacks.EN;
                     if (args[0]) {
                         if (args[0].toLowerCase() === "help" || args[0].toLowerCase() === "h") {
                             cmd.help(message, client, config);
                         } else {
-                            cmd.run(message, args, client, dbm, commands, config);
+                            cmd.run(pack, message, args, client, dbm, commands, config);
                         }
                     } else {
-                        cmd.run(message, args, client, dbm, commands, config);
+                        cmd.run(pack, message, args, client, dbm, commands, config);
                     }
                 } catch (e) {
                     console.log(e);
                 }
             }
-        } else if(command == "reload" && message.author.id === config.ownerID){
+        } else if (command == "reload" && message.author.id === config.ownerID) {
             commands = {};
             readComs();
+            readPacks();
             message.react(client.emojis.resolve("409802959556182026"));
         }
     }
@@ -60,7 +62,7 @@ function readPacks() {
     files.forEach(file => {
         if (file.includes(".json")) {
             let pack = JSON.parse(fs.readFileSync(`./translations/${file}`, 'utf8'))
-            languagePacks[file] = pack;
+            languagePacks[file.split('.json')[0]] = pack;
         }
     })
 }

@@ -20,14 +20,14 @@ module.exports = {
             .addField("Aliases:", `\`${info.name}\`, \`${info.aliases.join("`, `")}\``)
         message.channel.send(embed)
     },
-    run: async (message, args, client, dbm) => {
+    run: async (pack, message, args, client, dbm) => {
         let embed = new Discord.MessageEmbed()
             .setColor("#c06ed9")
-            .setTitle(`Credits`)
-            .setDescription(`These awesome people are all the ones you should really be thanking for making this bot possible, without their help, feedback, and suggestions this bot would not be anywhere close to as good as it has become.`)
-            .addField("Emoji and Icons:", "REAPER_corp#8846", true)
-            .addField("Design:", "Broken Cinder#2467\nZane#8888\nthefunniman#2388\nAshghj#6951\nSourdough#1759", true)
-            .addField("Backend:", "The whole 42Bytes team for having an amazing API for me to draw data from.", true)
+            .setTitle(pack.commands.credits.titleText)
+            .setDescription(pack.commands.credits.description)
+            .addField(pack.commands.credits.field1, "REAPER_corp#8846", true)
+            .addField(pack.commands.credits.field2, "Broken Cinder#2467\nZane#8888\nthefunniman#2388\nAshghj#6951\nSourdough#1759", true)
+            .addField(pack.commands.credits.field3.title, pack.commands.credits.field3.description, true)
         message.channel.send(embed)
     },
     preflight: (message, args, client, dbm) => {

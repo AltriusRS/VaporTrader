@@ -6,7 +6,7 @@ class User {
         this.displayName = user.displayName !== undefined ? user.displayName : user.username;
         this.id = user.id;
         this.platform = config.platform;
-        this.language = config.language;
+        this.language = config.lang;
         this.wishlists = [];
         this.getWishLists = async () => {
             this.wishlists = await parent.getUserWishList(this.id, this);
