@@ -8,19 +8,17 @@ readPacks()
 async function handle(message, client, dbm) {
     if (message.author.bot) return;
     if (message.content.toLocaleLowerCase().startsWith(config.prefix)) {
-        message.content = message.content.split(config.prefix).join("");
+        message.content = message.content.replace(config.prefix, "");
         let args = message.content.split(" ");
         let command = args.shift().toLowerCase();
         let cmd = commands[command];
         if (cmd !== null && cmd !== undefined) {
             if (cmd.preflight(message, args, client, dbm)) {
                 try {
-                    let userConfig = await dbm.getUserConfig(message.author);
-                    let pack = languagePacks[userConfig.language];
-                    pack = pack !== undefined ? pack : languagePacks.EN;
+                    let pack = await choosePack(dbm, message.author.id);
                     if (args[0]) {
                         if (args[0].toLowerCase() === "help" || args[0].toLowerCase() === "h") {
-                            cmd.help(message, client, config);
+                            cmd.help(message, client, config, pack);
                         } else {
                             cmd.run(pack, message, args, client, dbm, commands, config);
                         }
@@ -40,7 +38,8 @@ async function handle(message, client, dbm) {
     }
 }
 
-module.exports.handle = handle
+module.exports.handle = handle;
+module.exports.choosePack = choosePack;
 
 
 function readComs() {
@@ -65,4 +64,11 @@ function readPacks() {
             languagePacks[file.split('.json')[0]] = pack;
         }
     })
+}
+
+async function choosePack(dbm, user) {
+    let userConfig = await dbm.getUserConfig({id: user});
+    let pack = languagePacks[userConfig.language];
+    pack = pack !== undefined ? pack : languagePacks.en_GB;
+    return pack;
 }

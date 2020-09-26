@@ -1,0 +1,48 @@
+{
+  "apiName": "en",
+  "commands": {
+    "help": {
+      "titleText": "some text"
+    },
+    "credits": {
+      "help": {
+      },
+      "titleText": "Credits",
+      "description": "These awesome people are all the ones you should really be thanking for making this bot possible, without their help, feedback, and suggestions this bot would not be anywhere close to as good as it has become.",
+      "field1": "Emoji and Icons:",
+      "field2": "Design:",
+      "field3": {
+        "title": "Backend:",
+        "description": "The whole 42Bytes team for having an amazing API for me to draw data from."
+      }
+    },
+    "endAlert": {
+      "title": "Price Alert Cancelled",
+      "description": "You will no longer receive price notifications on this item",
+      "errors": {
+        "UserNotSubscribed": "You dont have any active price alerts for $ITEM_NAME.",
+        "ItemNotExist": "Unable to locate item: $ITEM_NAME.",
+        "DatabaseError": "The database encountered a problem, maybe try again?"
+      }
+    },
+    "startAlert": {
+      "title": "Price Alert Created",
+      "description": "You will begin to receive price notifications on this item",
+      "errors": {
+        "UserNotSubscribed": "You already have an active price alert for $ITEM_NAME.",
+        "ItemNotExist": "Unable to locate item: $ITEM_NAME.",
+        "DatabaseError": "The database encountered a problem, maybe try again?"
+      }
+    }
+  },
+  "alerts": {
+    "title": "Price Alert! (Beta)",
+    "footer": "If you got your item successfully, consider cancelling your price alert to stop future messages like this",
+    "description": "Your price alert on the $ITEM_NAME has been triggered!\n\nContact the $BUYER_FORMATTED with the following message:\n\n`/whisper $INGAME_NAME Hi! I $WTS-B $ITEM_NAME for $PRICE :platinum: (Powered by: Vapor Trader)`",
+    "multiUserAlert": {
+      "title": "WARNING",
+      "singular": "You are competing against approximately 1 other person for this price alert.",
+      "plural": "You are competing against approximately $OTHER_SUBSCRIBERS other people for this price alert."
+    }
+  }
+}

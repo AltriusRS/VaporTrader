@@ -41,7 +41,7 @@ class DBM {
     async getPriceAlerts(raw_item, price, buy, platform) {
         return new Promise((resolve, reject) => {
             if (buy) {
-                this.pool.query(`SELECT consumer FROM general.price_alerts WHERE general.price_alerts.platform = '${platform}' AND general.price_alerts.buy = false AND general.price_alerts.threshold < ${price} AND general.price_alerts.item = '${raw_item}'`, async (err, alerts) => {
+                this.pool.query(`SELECT consumer FROM general.price_alerts WHERE general.price_alerts.platform = '${platform}' AND general.price_alerts.buy = false AND general.price_alerts.threshold <= ${price} AND general.price_alerts.item = '${raw_item}'`, async (err, alerts) => {
                     if (err) reject(err);
                     let people = [];
                     let item = await this.getItemById(raw_item);
@@ -52,7 +52,7 @@ class DBM {
                     resolve(people)
                 })
             } else {
-                this.pool.query(`SELECT consumer FROM general.price_alerts WHERE general.price_alerts.platform = '${platform}' AND general.price_alerts.buy = true AND general.price_alerts.threshold > ${price} AND general.price_alerts.item = '${raw_item}'`, async (err, alerts) => {
+                this.pool.query(`SELECT consumer FROM general.price_alerts WHERE general.price_alerts.platform = '${platform}' AND general.price_alerts.buy = true AND general.price_alerts.threshold >= ${price} AND general.price_alerts.item = '${raw_item}'`, async (err, alerts) => {
                     if (err) reject(err);
                     let people = [];
                     let item = await this.getItemById(raw_item);
@@ -63,6 +63,41 @@ class DBM {
                     resolve(people)
                 })
             }
+        })
+    }
+
+    async subscribePriceAlert(member, itemName, threshold, wtb) {
+        let user = await this.getUserConfig(member);
+        return new Promise((resolve, reject) => {
+            this.pool.query(`SELECT * FROM general.items WHERE general.items.url_name = '${itemName}'`, async (err, data) => {
+                if (err) resolve({passed: false, reason: err});
+                if (data.rows.length > 0) {
+                    this.pool.query(`INSERT INTO general.price_alerts (consumer, platform, buy, threshold, item) VALUES (${member.id}, '${user.platform}', ${wtb}, ${threshold}, '${data.rows[0].id}')`, (error, result) => {
+                        if (error) resolve({passed: false, reason: error});
+
+                        resolve({passed: true, reason: undefined});
+                    })
+                } else {
+                    resolve({passed: false, reason: "Item does not exist"});
+                }
+            })
+        })
+    }
+
+    async unsubscribePriceAlert(member, itemName) {
+        return new Promise((resolve, reject) => {
+            this.pool.query(`SELECT * FROM general.items WHERE general.items.url_name = '${itemName}'`, async (err, data) => {
+                if (err) resolve({passed: false, reason: err});
+                if (data.rows.length > 0) {
+                    this.pool.query(`DELETE FROM general.price_alerts WHERE price_alerts.consumer = ${member.id} AND price_alerts.item = '${data.rows[0].id}'`, (error, result) => {
+                        if (error) resolve({passed: false, reason: error});
+
+                        resolve({passed: true, reason: undefined});
+                    })
+                } else {
+                    resolve({passed: false, reason: "Item does not exist"});
+                }
+            })
         })
     }
 

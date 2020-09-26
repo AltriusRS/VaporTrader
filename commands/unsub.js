@@ -1,10 +1,10 @@
 const Discord = require('discord.js');
 
 const info = {
-    name: "credits",
-    aliases: ["c"],
+    name: "unsub",
+    aliases: ["us"],
     public: true,
-    description: "The people who made this bot possible"
+    description: "Unsubscribe from a price alert"
 }
 
 module.exports = {
@@ -21,14 +21,16 @@ module.exports = {
         message.channel.send(embed)
     },
     run: async (pack, message, args, client, dbm) => {
-        let embed = new Discord.MessageEmbed()
-            .setColor("#c06ed9")
-            .setTitle(pack.commands.credits.titleText)
-            .setDescription(pack.commands.credits.description)
-            .addField(pack.commands.credits.field1, "REAPER_corp#8846", true)
-            .addField(pack.commands.credits.field2, "Broken Cinder#2467\nZane#8888\nthefunniman#2388\nAshghj#6951\nSourdough#1759", true)
-            .addField(pack.commands.credits.field3.title, pack.commands.credits.field3.description, true)
-        message.channel.send(embed)
+        let success = await dbm.unsubscribePriceAlert(message.author, args.join('_').toLowerCase())
+        if (success.passed) {
+            let embed = new Discord.MessageEmbed()
+                .setColor("#c06ed9")
+                .setTitle(pack.commands.endAlert.title)
+                .setDescription(pack.commands.endAlert.description)
+            message.channel.send(embed)
+        } else {
+            console.log(success.reason);
+        }
     },
     preflight: (message, args, client, dbm) => {
         return true;

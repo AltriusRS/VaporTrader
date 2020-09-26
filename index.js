@@ -16,36 +16,43 @@ client.on('message', async (message) => {
     commands.handle(message, client, dbm);
 })
 
-client.on('priceAlert', (alerts, info, buy) => {
-    let embed = new Discord.MessageEmbed()
-        .setColor("#C06ED9")
-        .setTitle("Price Alert!")
-        .setThumbnail(`https://warframe.market/static/assets/${info.order.item.icon}`)
-        .setDescription(`Your price alert on the ${info.order.item.en.item_name} has been triggered!\n\nContact the ${formatBuyer(buy)} with the following message:\n\n\`/whisper ${info.order.user.ingame_name} Hi! I ${formatBuyer2(buy)} ${info.order.item.en.item_name} for ${info.order.platinum} :platinum: (Powered by: Vapor Trader)\``)
-        .setFooter("If you got your item successfully, consider cancelling your price alert to stop future messages like this")
+client.on('priceAlert', async(alerts, info, buy) => {
+    for(var i=0;i<alerts.length;i++){
+        let alert = alerts[i];
+        let u = client.users.cache.get(alert.user)
+        let pack = await commands.choosePack(dbm, alert.user);
+        let description = pack.alerts.description;
+        description = description.split("$ITEM_NAME").join(info.order.item[pack.apiName].item_name);
+        description = description.replace("$BUYER_FORMATTED", formatBuyer(buy));
+        description = description.replace("$WTS-B", formatBuyer2(buy));
+        description = description.replace("$INGAME_NAME", info.order.user.ingame_name);
+        description = description.replace("$PRICE", info.order.platinum);
+        let embed = new Discord.MessageEmbed()
+            .setColor("#C06ED9")
+            .setTitle(pack.alerts.title)
+            .setThumbnail(`https://warframe.market/static/assets/${info.order.item.icon}`)
+            .setDescription(description)
+            .setFooter(pack.alerts.footer)
 
-    if (((alerts.length) - 1) > 0) {
-        if (((alerts.length) - 1) > 1) {
-            embed.addField("WARNING", `You are competing against approximately ${((alerts.length) - 1)}  other people for this price alert.`)
-        } else {
-            embed.addField("WARNING", `You are competing against approximately ${((alerts.length) - 1)}  other person for this price alert.`)
+        if (((alerts.length) - 1) > 0) {
+            if (((alerts.length) - 1) > 1) {
+                embed.addField(pack.alerts.multUserAlert.title, pack.alerts.multUserAlert.plural)
+            } else {
+                embed.addField(pack.alerts.multUserAlert.title, pack.alerts.multUserAlert.singular)
+            }
         }
-    }
 
-    if (info.order.user.avatar) {
-        embed.setAuthor(info.order.user.ingame_name, `https://warframe.market/static/assets/${info.order.user.avatar}`);
-    } else {
-        embed.setAuthor(info.order.user.ingame_name, "https://warframe.market/static/assets/user/default-avatar.png");
-    }
-
-    alerts.forEach(user => {
-        let u = client.users.cache.get(user.user)
+        if (info.order.user.avatar) {
+            embed.setAuthor(info.order.user.ingame_name, `https://warframe.market/static/assets/${info.order.user.avatar}`);
+        } else {
+            embed.setAuthor(info.order.user.ingame_name, "https://warframe.market/static/assets/user/default-avatar.png");
+        }
         try {
-            u.send(embed);
+            await u.send(embed);
         } catch (e) {
             console.log(e);
         }
-    })
+    }
 })
 
 function formatBuyer(buy) {
@@ -58,8 +65,8 @@ function formatBuyer(buy) {
 
 function formatBuyer2(buy) {
     if (buy) {
-        return "want to buy your"
-    } else {
         return "want to sell my"
+    } else {
+        return "want to buy your"
     }
 }
