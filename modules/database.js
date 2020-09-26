@@ -72,7 +72,7 @@ class DBM {
             this.pool.query(`SELECT * FROM general.items WHERE general.items.url_name = '${itemName}'`, async (err, data) => {
                 if (err) resolve({passed: false, reason: err});
                 if (data.rows.length > 0) {
-                    this.pool.query(`INSERT INTO general.price_alerts (consumer, platform, buy, threshold, item) VALUES (${member.id}, '${user.platform}', ${wtb}, ${threshold}, '${data.rows[0].id}')`, (error, result) => {
+                    this.pool.query(`INSERT INTO general.price_alerts (consumer, platform, buy, threshold, item) VALUES (${member.id}, '${user.platform.toLowerCase()}', ${wtb}, ${threshold}, '${data.rows[0].id}')`, (error, result) => {
                         if (error) resolve({passed: false, reason: error});
 
                         resolve({passed: true, reason: undefined});
