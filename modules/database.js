@@ -157,6 +157,15 @@ class DBM {
         })
     }
 
+    async setUserPlatform(member, platform) {
+        return new Promise((resolve, reject) => {
+            this.pool.query(`UPDATE general.user_config SET platform = '${platform.toUpperCase()}' WHERE id = ${member.id}`, (err, data) => {
+                if (err) reject(err);
+                resolve({passed: true});
+            })
+        })
+    }
+
     async insertUserConfig(member) {
         return new Promise((resolve, reject) => {
             this.pool.query(`INSERT INTO general.user_config (id) VALUES (${member.id})`, (err, data) => {
@@ -171,6 +180,7 @@ class DBM {
             this.pool.query(`SELECT * FROM general.user_config WHERE general.user_config.id = ${member.id}`, async (err, data) => {
                 if (err) reject(err);
                 if (data.rows.length === 0) {
+                    console.log(`Adding user: ${member.id} to database`)
                     await this.insertUserConfig(member);
                     resolve(new User(member, {platform: 'pc', language: 'en'}, this));
                 } else {

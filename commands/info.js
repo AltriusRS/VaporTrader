@@ -1,4 +1,5 @@
 const Discord = require('discord.js');
+const config = require('../config.json');
 const info = {
     name: "info",
     aliases: ["i"],
@@ -22,11 +23,14 @@ module.exports = {
     run: async (pack, message, args, client, dbm) => {
         let embed = new Discord.MessageEmbed()
             .setColor("#c06ed9")
-            .setTitle(`Information`)
-            .setDescription(`Servers: ${formatNo(client.guilds.cache.size)}\nLatency: Calculating ms\nThis bot is not affiliated with Digital Extremes:tm: or warframe.market:copyright:`);
-
+            .setTitle(pack.commands.info.title)
+            .setDescription(pack.commands.info.temp);
         message.channel.send(embed).then(async (m1) => {
-            embed.setDescription(`Servers: ${formatNo(client.guilds.cache.size)}\nLatency: ${formatNo(m1.createdTimestamp - message.createdTimestamp)} ms\nTradable Items: ${formatNo(await dbm.countItems())}\nDeveloped by: Altrius#0420\nVersion: ${client.botVersion}\n[Invite Link](https://discord.com/api/oauth2/authorize?client_id=752258474695590019&permissions=289792&scope=bot)\n[Source Code](https://github.com/fatalcenturion/VaporTrader)\nThis bot is not affiliated with Digital Extremes:tm: or warframe.market:copyright:`);
+            let description = pack.commands.info.description.replace("$VERSION", config.version);
+            description = description.replace("$SERVER_COUNT", formatNo(client.guilds.cache.size))
+            description = description.replace("$LATENCY", formatNo(m1.createdTimestamp - message.createdTimestamp))
+            description = description.replace("$ITEM_COUNT", formatNo(await dbm.countItems()))
+            embed.setDescription(description);
             m1.edit(embed);
         });
     },

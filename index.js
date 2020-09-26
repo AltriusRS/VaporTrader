@@ -3,10 +3,10 @@ const Discord = require('discord.js');
 const commands = require('./modules/commands');
 const dbm = (require('./modules/database').new(config));
 const client = new Discord.Client({shards: "auto"});
-const alertManager = require('./modules/alerts')
+const alertManager = require('./modules/alerts');
 let platforms = ["pc", "ps4", "xbox", "switch"];
 client.login(config.token);
-client.on('ready', () => {
+client.on('ready', async () => {
     console.log(`Vapor Trader - ${config.version}\nConnecting to feeds`)
     alertManager.start(platforms, client, dbm);
 })
@@ -16,8 +16,8 @@ client.on('message', async (message) => {
     commands.handle(message, client, dbm);
 })
 
-client.on('priceAlert', async(alerts, info, buy) => {
-    for(var i=0;i<alerts.length;i++){
+client.on('priceAlert', async (alerts, info, buy) => {
+    for (var i = 0; i < alerts.length; i++) {
         let alert = alerts[i];
         let u = client.users.cache.get(alert.user)
         let pack = await commands.choosePack(dbm, alert.user);

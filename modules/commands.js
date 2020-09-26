@@ -29,7 +29,7 @@ async function handle(message, client, dbm) {
                     console.log(e);
                 }
             }
-        } else if (command == "reload" && message.author.id === config.ownerID) {
+        } else if ((command == "reload" || command == "rl") && message.author.id === config.ownerID) {
             commands = {};
             readComs();
             readPacks();

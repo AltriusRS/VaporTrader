@@ -1,6 +1,10 @@
 {
   "apiName": "en",
   "commands": {
+    "info": {
+      "title": "Information",
+      "description": "Servers: $SERVER_COUNT\nLatency: $LATENCY ms\nItems: $ITEM_COUNT\nDeveloped by: Altrius#0420\nVersion: $VERSION\n\n[Invite Link](https://discord.com/api/oauth2/authorize?client_id=752258474695590019&permissions=289792&scope=bot) (discord.com)\n[Source Code](https://github.com/fatalcenturion/VaporTrader) (github.com)\n[Support the Developer](https://patreon.com/vaportrader) (patreon.com)\n\nThis bot is not affiliated with Digital Extremes:tm: or warframe.market:copyright:"
+    },
     "help": {
       "titleText": "some text"
     },
@@ -32,6 +36,16 @@
         "UserNotSubscribed": "You already have an active price alert for $ITEM_NAME.",
         "ItemNotExist": "Unable to locate item: $ITEM_NAME.",
         "DatabaseError": "The database encountered a problem, maybe try again?"
+      }
+    },
+    "setPlatform": {
+      "title": "Platform changed",
+      "description": "Your platform was successfully updated",
+      "errors": {
+        "unRecognizedPlatform": {
+          "title": "Error",
+          "description": "The platform you specified ($PLATFORM) is not recognized, please try again."
+        }
       }
     }
   },
