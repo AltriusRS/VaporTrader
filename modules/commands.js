@@ -33,9 +33,9 @@ async function handle(message, client, dbm) {
             commands = {};
             readComs();
             readPacks();
-            message.react(client.emojis.resolve("409802959556182026"));
+            await message.react(client.emojis.resolve("409802959556182026"));
         } else if (command == "patch" && message.author.id === config.ownerID) {
-            message.react(client.emojis.resolve("409802959556182026"));
+            await message.react(client.emojis.resolve("409802959556182026"));
             process.exit();
         }
     }
