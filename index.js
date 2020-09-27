@@ -20,7 +20,7 @@ client.on('message', async (message) => {
                 let embed = new Discord.MessageEmbed()
                     .setColor("#C06ED9")
                     .setTitle("Automated Patch (Source: GitHub)")
-                    .description(`Automatically applying patch [${message.embeds[0].description.split('(')[0].split('[`')[1].split('`]')[0]}](${message.embeds[0].url})`)
+                    .setDescription(`Automatically applying patch [${message.embeds[0].description.split('(')[0].split('[`')[1].split('`]')[0]}](${message.embeds[0].url})`)
                 await cnl.send(embed);
                 process.exit();
             }
