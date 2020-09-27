@@ -13,7 +13,7 @@ client.on('ready', async () => {
 })
 
 client.on('message', async (message) => {
-    if (message.author.bot) return;
+    if (message.author.bot) console.log(message);
     commands.handle(message, client, dbm);
 })
 
@@ -54,6 +54,10 @@ client.on('priceAlert', async (alerts, info, buy) => {
             console.log(e);
         }
     }
+})
+
+client.on("guildCreate", async(guild) => {
+    await dbm.getGuildConfig(guild)
 })
 
 function formatBuyer(buy) {

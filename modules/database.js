@@ -14,6 +14,13 @@ class User {
     }
 }
 
+class Guild {
+    constructor(guild, config, parent) {
+        this.id = guild.id;
+        console.log(config, guild)
+    }
+}
+
 class WishListItem {
     constructor(item, member, parent) {
         this.id = item.id;
@@ -182,6 +189,30 @@ class DBM {
     async insertUserConfig(member) {
         return new Promise((resolve, reject) => {
             this.pool.query(`INSERT INTO general.user_config (id) VALUES (${member.id})`, (err, data) => {
+                if (err) reject(err);
+                resolve();
+            })
+        })
+    }
+
+    async getGuildConfig(guild) {
+        return new Promise((resolve, reject) => {
+            this.pool.query(`SELECT * FROM general.guild_config WHERE general.guild_config.id = ${guild.id}`, async (err, data) => {
+                if (err) reject(err);
+                if (data.rows.length === 0) {
+                    console.log(`Adding user: ${guild.id} to database`)
+                    await this.insertGuildConfig(guild);
+                    resolve(new Guild(guild, {}, this));
+                } else {
+                    resolve(new User(member, data.rows[0], this));
+                }
+            })
+        })
+    }
+
+    async insertGuildConfig(guild) {
+        return new Promise((resolve, reject) => {
+            this.pool.query(`INSERT INTO general.guild_config (id) VALUES (${guild.id})`, (err, data) => {
                 if (err) reject(err);
                 resolve();
             })
