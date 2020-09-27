@@ -13,7 +13,20 @@ client.on('ready', async () => {
 })
 
 client.on('message', async (message) => {
-    if (message.author.bot) console.log(message);
+    if (message.author.bot) {
+        if (message.author.username === "GitHub" && message.author.discriminator === '0000') {
+            if (message.embeds[0].title.includes(config.patchLocator) && message.embeds[0].description.includes("[PATCH]")) {
+                let cnl = await client.channels.fetch('759720616068382730');
+                let embed = new Discord.MessageEmbed()
+                    .setColor("#C06ED9")
+                    .setTitle("Automated Patch (Source: GitHub)")
+                    .description(`Automatically applying patch [${message.embeds[0].description.split('(')[0].split('[`')[1].split('`]')[0]}](${message.embeds[0].url})`)
+                await cnl.send(embed);
+                process.exit();
+            }
+        }
+    }
+    ;
     commands.handle(message, client, dbm);
 })
 
@@ -56,7 +69,7 @@ client.on('priceAlert', async (alerts, info, buy) => {
     }
 })
 
-client.on("guildCreate", async(guild) => {
+client.on("guildCreate", async (guild) => {
     await dbm.getGuildConfig(guild)
 })
 

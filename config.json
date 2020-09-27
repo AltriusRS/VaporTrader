@@ -15,5 +15,6 @@
   "urls": {
     "base": "https://api.warframe.market/v1",
     "socket": "wss://warframe.market/socket"
-  }
+  },
+  "patchLocator": "[PriceSpy:v2]"
 }
