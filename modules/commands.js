@@ -35,7 +35,15 @@ async function handle(message, client, dbm) {
             readPacks();
             await message.react(client.emojis.resolve("409802959556182026"));
         } else if (command == "patch" && message.author.id === config.ownerID) {
-            await message.react(client.emojis.resolve("409802959556182026"));
+            let cnl = await client.channels.fetch('759720616068382730');
+            let embed = new Discord.MessageEmbed()
+                .setColor("#C06ED9")
+                .setTitle("Automated Patch (Source: Owner)")
+                .setDescription(`Automatically applying patch`)
+                .addField(`Requested By`, message.author.username)
+                .setTimestamp(Date.now())
+            await cnl.send(embed);
+            process.exit();
             process.exit();
         }
     }

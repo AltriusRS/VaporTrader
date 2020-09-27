@@ -21,6 +21,8 @@ client.on('message', async (message) => {
                     .setColor("#C06ED9")
                     .setTitle("Automated Patch (Source: GitHub)")
                     .setDescription(`Automatically applying patch [${message.embeds[0].description.split('(')[0].split('[`')[1].split('`]')[0]}](${message.embeds[0].url})`)
+                    .addField(`Requested By`, "Github")
+                    .setTimestamp(Date.now())
                 await cnl.send(embed);
                 process.exit();
             }
