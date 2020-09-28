@@ -5,11 +5,18 @@ const dbm = (require('./modules/database').new(config));
 const client = new Discord.Client({shards: "auto"});
 const alertManager = require('./modules/alerts');
 let platforms = ["pc", "ps4", "xbox", "switch"];
+// const relicDrops = require('./relics.json')
+//
+// for(let i=0;i<Object.keys[relicDrops].length;i++){
+//
+// }
+//
+
 client.login(config.token);
 client.on('ready', async () => {
     console.log(`Vapor Trader - ${config.version}\nConnecting to feeds`)
     await client.user.setActivity(`with ${await dbm.countItems()} items`)
-    alertManager.start(platforms, client, dbm);
+    // alertManager.start(platforms, client, dbm);
 })
 
 client.on('message', async (message) => {
@@ -27,8 +34,7 @@ client.on('message', async (message) => {
                 process.exit();
             }
         }
-    }
-    ;
+    };
     commands.handle(message, client, dbm);
 })
 

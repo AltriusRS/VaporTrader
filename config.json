@@ -6,10 +6,10 @@
   "ownerID": "180639594017062912",
   "languagePacks": "./translations",
   "database": {
-    "user": "news_bot",
-    "host": "10.0.0.102",
-    "database": "vapor_trader_dev",
-    "password": "tachi",
+    "user": "zane",
+    "host": "vptd.cf",
+    "database": "vapor_trader_live",
+    "password": "zane.sucks",
     "port": 5432
   },
   "urls": {
