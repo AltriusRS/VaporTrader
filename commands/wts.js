@@ -1,10 +1,10 @@
 const Discord = require('discord.js');
 
 const info = {
-    name: "wtb",
+    name: "wts",
     aliases: [],
     public: true,
-    description: "subscribe to a buyer price alert"
+    description: "subscribe to a seller price alert"
 }
 
 module.exports = {
@@ -21,8 +21,8 @@ module.exports = {
         message.channel.send(embed)
     },
     run: async (pack, message, args, client, dbm) => {
-        let threshold = args.pop();
-        let success = await dbm.subscribePriceAlert(message.author, args.join('_').toLowerCase(), threshold, true)
+        let threshold = parseInt(args.pop());
+        let success = await dbm.subscribePriceAlert(message.author, args.join('_').toLowerCase(), threshold, false)
         if (success.passed) {
             let embed = new Discord.MessageEmbed()
                 .setColor("#c06ed9")

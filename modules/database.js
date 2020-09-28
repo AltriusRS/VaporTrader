@@ -17,10 +17,12 @@ class User {
 class Guild {
     constructor(guild, config, parent) {
         this.id = guild.id;
-        console.log(config, guild)
+        this.prefix = config.prefix;
+        this.language = config.preferred_language;
+        this.premium = config.premium;
+        this.name = config.guild_name;
     }
 }
-
 class WishListItem {
     constructor(item, member, parent) {
         this.id = item.id;
@@ -202,9 +204,9 @@ class DBM {
                 if (data.rows.length === 0) {
                     console.log(`Adding user: ${guild.id} to database`)
                     await this.insertGuildConfig(guild);
-                    resolve(new Guild(guild, {}, this));
+                    resolve(new Guild(guild, {guild_name: guild.name, id: guild.id}, this));
                 } else {
-                    resolve(new User(member, data.rows[0], this));
+                    resolve(new Guild(guild, data.rows[0], this));
                 }
             })
         })
@@ -212,7 +214,7 @@ class DBM {
 
     async insertGuildConfig(guild) {
         return new Promise((resolve, reject) => {
-            this.pool.query(`INSERT INTO general.guild_config (id) VALUES (${guild.id})`, (err, data) => {
+            this.pool.query(`INSERT INTO general.guild_config (id, guild_name) VALUES (${guild.id}, e'${guild.name.split("'").join("\'")}')`, (err, data) => {
                 if (err) reject(err);
                 resolve();
             })

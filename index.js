@@ -16,7 +16,7 @@ client.login(config.token);
 client.on('ready', async () => {
     console.log(`Vapor Trader - ${config.version}\nConnecting to feeds`)
     await client.user.setActivity(`with ${await dbm.countItems()} items`)
-    // alertManager.start(platforms, client, dbm);
+    alertManager.start(platforms, client, dbm);
 })
 
 client.on('message', async (message) => {
@@ -35,6 +35,7 @@ client.on('message', async (message) => {
             }
         }
     };
+    let guildconfig = await dbm.getGuildConfig(message.guild);
     commands.handle(message, client, dbm);
 })
 
