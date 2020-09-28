@@ -23,6 +23,7 @@ class Guild {
         this.name = config.guild_name;
     }
 }
+
 class WishListItem {
     constructor(item, member, parent) {
         this.id = item.id;
@@ -36,6 +37,19 @@ class WishListItem {
 class DBM {
     constructor(config) {
         this.pool = new Pool(config.database);
+    }
+
+    async getItemDrops(id) {
+        return new Promise((resolve, reject) => {
+            this.pool.query(`SELECT * FROM general.item_drops WHERE general.item_drops.item_id = '${id}'`, async (err, data) => {
+                if (err) resolve({passed: false, reason: err});
+                if (data.rows.length > 0) {
+                    resolve(data.rows);
+                } else {
+                    resolve({passed: false, reason: "Item does not exist"});
+                }
+            })
+        })
     }
 
     async findItemByName(name) {
