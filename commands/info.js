@@ -30,7 +30,7 @@ module.exports = {
             description = description.replace("$SERVER_COUNT", formatNo(client.guilds.cache.size))
             description = description.replace("$LATENCY", formatNo(m1.createdTimestamp - message.createdTimestamp))
             description = description.replace("$ITEM_COUNT", formatNo(await dbm.countItems()))
-            description = description.replace("$USER_CACH", formatNo(client.users.cache.size))
+            description = description.replace("$USER_CACHE", formatNo(client.users.cache.size))
             embed.setDescription(description);
             m1.edit(embed);
         });
