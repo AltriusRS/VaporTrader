@@ -5,8 +5,6 @@ const dbm = (require('./modules/database').new(config));
 const client = new Discord.Client({shards: "auto"});
 const alertManager = require('./modules/alerts');
 let platforms = ["pc", "ps4", "xbox", "switch"];
-const relicDrops = require('./relics.json')
-let keys = Object.keys(relicDrops);
 
 client.login(config.token);
 client.on('ready', async () => {
