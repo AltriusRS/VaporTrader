@@ -33,7 +33,7 @@ module.exports = {
             if (!item.name_en.includes('Set')) {
                 for (var i = 0; i < search_results.length; i++) {
                     let s = search_results[i];
-                    if (s.item_name.includes('Set')) {
+                    if (s.name_en.includes('Set')) {
                         item = s;
                     }
                 }
