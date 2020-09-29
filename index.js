@@ -7,6 +7,7 @@ const alertManager = require('./modules/alerts');
 let platforms = ["pc", "ps4", "xbox", "switch"];
 
 client.login(config.token);
+
 client.on('ready', async () => {
     console.log(`Vapor Trader - ${config.version}\nConnecting to feeds`)
     await client.user.setActivity(`with ${await dbm.countItems()} items`)
@@ -77,6 +78,15 @@ client.on('priceAlert', async (alerts, info, buy) => {
 
 client.on("guildCreate", async (guild) => {
     await dbm.getGuildConfig(guild)
+    console.log(guild)
+    let embed = new Discord.MessageEmbed()
+        .setColor("#00b500")
+        .setTitle("Joined Guild")
+        .addField("Name", guild.name, true)
+        .addField("ID", guild.id, true)
+        .addField("Owner", `${guild.owner.user.username}#${guild.owner.user.discriminator}`, true)
+        .setTimestamp(Date.now());
+    await client.channels.cache.get("760621133535248396").send(embed)
 })
 
 function formatBuyer(buy) {

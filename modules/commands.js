@@ -33,7 +33,7 @@ async function handle(message, client, dbm) {
                         .setTitle("Error")
                         .setDescription(`\`\`\`${e.stack}\`\`\``)
                     message.channel.send(embed);
-                    let cnl = await client.channels.fetch('759720616068382730');
+                    let cnl = await client.channels.fetch('760620973790986280');
                     embed.setTimestamp(Date.now())
                         .addField("Command", cmd.name, true)
                         .addField("Server", message.guild.name, true)

@@ -238,7 +238,7 @@ class DBM {
             this.pool.query(`SELECT * FROM general.guild_config WHERE general.guild_config.id = ${guild.id}`, async (err, data) => {
                 if (err) reject(err);
                 if (data.rows.length === 0) {
-                    console.log(`Adding user: ${guild.id} to database`)
+                    console.log(`Adding guild: ${guild.id} to database`)
                     await this.insertGuildConfig(guild);
                     resolve(new Guild(guild, {guild_name: guild.name, id: guild.id}, this));
                 } else {
@@ -250,7 +250,7 @@ class DBM {
 
     async insertGuildConfig(guild) {
         return new Promise((resolve, reject) => {
-            this.pool.query(`INSERT INTO general.guild_config (id, guild_name) VALUES (${guild.id}, e'${guild.name.split("'").join("\'")}')`, (err, data) => {
+            this.pool.query(`INSERT INTO general.guild_config (id, guild_name) VALUES (${guild.id}, e'${guild.name.split("'").join("\\'")}')`, (err, data) => {
                 if (err) reject(err);
                 resolve();
             })
