@@ -129,11 +129,9 @@ module.exports = {
         }
         await message.channel.send(embed);
     },
-    preflight
-:
-(message, args, client, dbm) => {
-    return true;
-}
+    preflight: (message, args, client, dbm) => {
+        return true;
+    }
 }
 
 function formatNo(x) {

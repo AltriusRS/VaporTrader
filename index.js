@@ -81,10 +81,16 @@ client.on("guildCreate", async (guild) => {
     let embed = new Discord.MessageEmbed()
         .setColor("#00b500")
         .setTitle("Joined Guild")
+        .setDescription(`Total Guilds: ${formatNo(client.guilds.cache.size)}`)
         .addField("Name", guild.name, true)
         .addField("ID", guild.id, true)
         .addField("Owner", `${guild.owner.user.username}#${guild.owner.user.discriminator}`, true)
         .setTimestamp(Date.now());
+    embed.setImage(guild.bannerURL());
+    console.log(embed.image);
+    embed.setImage(guild.splashURL());
+    embed.setThumbnail(guild.iconURL())
+
     await client.channels.cache.get("760621133535248396").send(embed)
 })
 
@@ -102,4 +108,10 @@ function formatBuyer2(buy) {
     } else {
         return "want to buy your"
     }
+}
+
+function formatNo(x) {
+    let parts = x.toString().split(".");
+    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    return parts.join(",");
 }

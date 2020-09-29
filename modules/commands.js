@@ -38,6 +38,7 @@ async function handle(message, client, dbm) {
                         .addField("Command", cmd.name, true)
                         .addField("Server", message.guild.name, true)
                         .addField("Member", `${message.author}\n${message.author.id}\n${message.author.username}#${message.author.discriminator}`, true)
+                        .addField("Args", args.join(", "), true);
                     await cnl.send(embed);
                 }
             }
