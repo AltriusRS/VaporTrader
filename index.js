@@ -78,7 +78,6 @@ client.on('priceAlert', async (alerts, info, buy) => {
 
 client.on("guildCreate", async (guild) => {
     await dbm.getGuildConfig(guild)
-    console.log(guild)
     let embed = new Discord.MessageEmbed()
         .setColor("#00b500")
         .setTitle("Joined Guild")
