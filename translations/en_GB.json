@@ -3,7 +3,7 @@
   "commands": {
     "relic_drops": {
       "title": "Relic Information",
-      "description": "Drops for $RELIC_NAME:\n:warning: Symbolizes that this item is __potentially__ vaulted"
+      "description": "Drops for $RELIC_NAME:\n:warning: Symbolizes that this item is __potentially__ vaulted\n:grey_exclamation: Symbolizes that an item could be vaulted, but at this time the bot is uncertain about it\n\n__**If there are any items with :grey_exclamation: next to them**__, please write in the support channel in the support server telling me which relic they are showing for, thank you."
     },
     "info": {
       "title": "Information",

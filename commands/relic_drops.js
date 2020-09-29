@@ -35,27 +35,43 @@ module.exports = {
             let description = "__Common (";
             for (let o = 0; o < tier.common.length; o++) {
                 let item = tier.common[o];
+                let info = (await dbm.findItemByName(item.item))[0];
                 if (o === 0) description += `${item.chance}%)__:\n`
-                if (item.vaulted) {
-                    description += ":warning:"
+                if (info !== undefined) {
+                    if (info.vaulted) {
+                        description += ":warning:"
+                    }
+                } else {
+                    description += ":grey_exclamation:"
                 }
                 description += `[${item.item}](https://warframe.market/items/${item.url})\n`
             }
             description += "\n__Uncommon (";
             for (let o = 0; o < tier.uncommon.length; o++) {
                 let item = tier.uncommon[o];
+                let info = (await dbm.findItemByName(item.item))[0];
                 if (o === 0) description += `${item.chance}%)__:\n`
-                if (item.vaulted) {
-                    description += ":warning:"
+
+                if (info !== undefined) {
+                    if (info.vaulted) {
+                        description += ":warning:"
+                    }
+                } else {
+                    description += ":grey_exclamation:"
                 }
                 description += `[${item.item}](https://warframe.market/items/${item.url})\n`
             }
             description += "\n__Rare (";
             for (let o = 0; o < tier.rare.length; o++) {
                 let item = tier.rare[o];
+                let info = (await dbm.findItemByName(item.item))[0];
                 if (o === 0) description += `${item.chance}%)__:\n`
-                if (item.vaulted) {
-                    description += ":warning:"
+                if (info !== undefined) {
+                    if (info.vaulted) {
+                        description += ":warning:"
+                    }
+                } else {
+                    description += ":grey_exclamation:"
                 }
                 description += `[${item.item}](https://warframe.market/items/${item.url})\n`
             }

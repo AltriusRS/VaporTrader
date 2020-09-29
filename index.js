@@ -28,8 +28,11 @@ client.on('message', async (message) => {
                 process.exit();
             }
         }
-    };
-    let guildconfig = await dbm.getGuildConfig(message.guild);
+    }
+    ;
+    if (message.guild) {
+        let guildconfig = await dbm.getGuildConfig(message.guild);
+    }
     commands.handle(message, client, dbm);
 })
 
