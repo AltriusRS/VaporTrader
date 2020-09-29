@@ -1,6 +1,10 @@
 {
   "apiName": "en",
   "commands": {
+    "relic_drops": {
+      "title": "Relic Information",
+      "description": "Drops for $RELIC_NAME:\n:warning: Symbolizes that this item is vaulted"
+    },
     "info": {
       "title": "Information",
       "temp": "Checking latency, please wait...",

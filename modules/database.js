@@ -39,6 +39,15 @@ class DBM {
         this.pool = new Pool(config.database);
     }
 
+    async getRelic(era, name) {
+        return new Promise((resolve, reject) => {
+            this.pool.query(`SELECT * FROM general.relic_drops WHERE general.relic_drops.era ILIKE '${era}' AND general.relic_drops.relic_name ILIKE '${name}'`, async (err, data) => {
+                if (err) reject(err);
+                resolve(data.rows)
+            })
+        })
+    }
+
     async getItemDrops(id) {
         return new Promise((resolve, reject) => {
             this.pool.query(`SELECT * FROM general.item_drops WHERE general.item_drops.item_id = '${id}'`, async (err, data) => {
