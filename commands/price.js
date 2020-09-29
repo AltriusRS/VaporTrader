@@ -13,7 +13,7 @@ module.exports = {
     aliases: info.aliases,
     public: info.public,
     description: info.description,
-    help: (message, client, config) => {
+    help: (message, client, config, pack) => {
         let embed = new Discord.MessageEmbed()
             .setColor("#c06ed9")
             .setTitle(info.name)
