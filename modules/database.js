@@ -74,6 +74,19 @@ class DBM {
         })
     }
 
+    async findItemByName(name) {
+        return new Promise((resolve, reject) => {
+            this.pool.query(`SELECT * FROM general.items WHERE general.items.url_name ILIKE '%${name.split(' ').join('_').toLowerCase()}%' OR general.items.name_en ILIKE '%${name.split(' ').join(' ')}%'`, async (err, data) => {
+                if (err) resolve({passed: false, reason: err});
+                if (data.rows.length > 0) {
+                    resolve(data.rows);
+                } else {
+                    resolve({passed: false, reason: "Item does not exist"});
+                }
+            })
+        })
+    }
+
     async countItems() {
         return new Promise((resolve, reject) => {
             this.pool.query(`SELECT COUNT(id) AS "total" FROM general.items`, async (err, data) => {

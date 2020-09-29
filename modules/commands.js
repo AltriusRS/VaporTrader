@@ -19,15 +19,26 @@ async function handle(message, client, dbm) {
                     let pack = await choosePack(dbm, message.author.id);
                     if (args[0]) {
                         if (args[0].toLowerCase() === "help" || args[0].toLowerCase() === "h") {
-                            cmd.help(message, client, config, pack);
+                            await cmd.help(message, client, config, pack);
                         } else {
-                            cmd.run(pack, message, args, client, dbm, commands, config);
+                            await cmd.run(pack, message, args, client, dbm, commands, config);
                         }
                     } else {
-                        cmd.run(pack, message, args, client, dbm, commands, config);
+                        await cmd.run(pack, message, args, client, dbm, commands, config);
                     }
                 } catch (e) {
                     console.log(e);
+                    let embed = new Discord.MessageEmbed()
+                        .setColor('#aa0000')
+                        .setTitle("Error")
+                        .setDescription(`\`\`\`${e.stack}\`\`\``)
+                    message.channel.send(embed);
+                    let cnl = await client.channels.fetch('759720616068382730');
+                    embed.setTimestamp(Date.now())
+                        .addField("Command", cmd.name, true)
+                        .addField("Server", message.guild.name, true)
+                        .addField("Member", `${message.author}\n${message.author.id}\n${message.author.username}#${message.author.discriminator}`, true)
+                    await cnl.send(embed);
                 }
             }
         } else if ((command == "reload" || command == "rl") && message.author.id === config.ownerID) {
@@ -35,16 +46,23 @@ async function handle(message, client, dbm) {
             readComs();
             readPacks();
             await message.react(client.emojis.resolve("409802959556182026"));
+            let cnl = await client.channels.fetch('759720616068382730');
+            let embed = new Discord.MessageEmbed()
+                .setColor("#FFFF00")
+                .setTitle("Automated Reload (Source: Owner)")
+                .setDescription(`Reloading....`)
+                .addField(`Requested By`, message.author.username)
+                .setTimestamp(Date.now())
+            await cnl.send(embed);
         } else if (command == "patch" && message.author.id === config.ownerID) {
             let cnl = await client.channels.fetch('759720616068382730');
             let embed = new Discord.MessageEmbed()
-                .setColor("#C06ED9")
+                .setColor("#ff5700")
                 .setTitle("Automated Patch (Source: Owner)")
                 .setDescription(`Automatically applying patch`)
                 .addField(`Requested By`, message.author.username)
                 .setTimestamp(Date.now())
             await cnl.send(embed);
-            process.exit();
             process.exit();
         }
     }
