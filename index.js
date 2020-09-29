@@ -87,8 +87,7 @@ client.on("guildCreate", async (guild) => {
         .addField("Owner", `${guild.owner.user.username}#${guild.owner.user.discriminator}`, true)
         .setTimestamp(Date.now());
     embed.setImage(guild.bannerURL());
-    console.log(embed.image);
-    embed.setImage(guild.splashURL());
+    if (embed.image.url === null) embed.setImage(guild.splashURL());
     embed.setThumbnail(guild.iconURL())
 
     await client.channels.cache.get("760621133535248396").send(embed)
