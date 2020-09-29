@@ -3,7 +3,7 @@
   "commands": {
     "relic_drops": {
       "title": "Relic Information",
-      "description": "Drops for $RELIC_NAME:\n:warning: Symbolizes that this item is vaulted"
+      "description": "Drops for $RELIC_NAME:\n:warning: Symbolizes that this item is __potentially__ vaulted"
     },
     "info": {
       "title": "Information",
