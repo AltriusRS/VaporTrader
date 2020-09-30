@@ -7,7 +7,7 @@
   "languagePacks": "./translations",
   "database": {
     "user": "zane",
-    "host": "vptd.cf",
+    "host": "localhost",
     "database": "vapor_trader_live",
     "password": "zane.sucks",
     "port": 5432
