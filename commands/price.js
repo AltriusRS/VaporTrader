@@ -33,7 +33,7 @@ module.exports = {
             await message.channel.send("Cannot Query more than 5 items at a time")
             await message.channel.stopTyping()
             return;
-        }
+        } else {
 
         let embeds = [];
         
@@ -43,7 +43,7 @@ module.exports = {
         let item = search_results[0];
 
         if (item === undefined) {
-            message.channel.send("Unknown Item")
+            message.channel.send("Unknown Item: ` "+pi+"`")
             message.channel.stopTyping()
         } else {
             if (!item.name_en.includes('Set')) {
@@ -155,13 +155,16 @@ module.exports = {
             embed.setDescription(`__**Overall Statistics:**__\n` + text);
 
             embeds.push(embed);
-            await sleep(1000)
+            await sleep(500);
         }
         }
-            message.channel.stopTyping()
+	console.log(embeds.length);
         for(let o=0;o<embeds.length;o++) {
+		console.log(embeds[o].title);
             await message.channel.send(embeds[o]);
         }
+	await message.channel.stopTyping();
+	}
     },
     preflight: (message, args, client, dbm) => {
         return true;
