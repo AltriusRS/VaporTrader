@@ -152,12 +152,12 @@ module.exports = {
                     embed.setDescription(`__**Overall Statistics:**__\n` + text);
 
                     embeds.push(embed);
-                    await sleep(500);
+                    if((items.length - n) > 1){
+                        await sleep(750);
+                    }
                 }
             }
-            console.log(embeds.length);
             for (let o = 0; o < embeds.length; o++) {
-                console.log(embeds[o].title);
                 await message.channel.send(embeds[o]);
             }
             await message.channel.stopTyping();
