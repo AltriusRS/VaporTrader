@@ -159,7 +159,7 @@ module.exports = {
         }
         }
             message.channel.stopTyping()
-        for(let o=0;0<embeds.length;o++) {
+        for(let o=0;o<embeds.length;o++) {
             await message.channel.send(embeds[o]);
         }
     },
