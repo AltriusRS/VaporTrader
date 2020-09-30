@@ -23,7 +23,21 @@ module.exports = {
     },
     run: async (pack, message, args, client, dbm) => {
         message.channel.startTyping()
-        let search_results = await dbm.findItemByName(args.join(" ").split('\'').join('\\\''));
+        let items = [];
+        let curParsed = "";
+        let ag = args.join(" ");
+        if (ag.includes(",")) {
+            items = ag.split(", ");
+        }
+        if(items.length > 5){
+            await message.channel.send("Cannot Query more than 5 items at a time")
+            await message.channel.stopTyping()
+            return;
+        }
+
+        for(let n=0;n<items.length;n++){
+          let pi = items[n];
+          let search_results = await dbm.findItemByName(pi.split("\'").join("\\'"));
         let item = search_results[0];
 
         if (item === undefined) {
@@ -139,9 +153,9 @@ module.exports = {
             embed.setDescription(`__**Overall Statistics:**__\n` + text);
 
             message.channel.send(embed)
-            message.channel.stopTyping()
         }
-
+        }
+            message.channel.stopTyping()
     },
     preflight: (message, args, client, dbm) => {
         return true;
