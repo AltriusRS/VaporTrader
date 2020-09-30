@@ -23,6 +23,14 @@ module.exports = {
     },
     run: async (pack, message, args, client, dbm) => {
         message.channel.startTyping()
+        let items = [];
+        let curParsed = "";
+        let ag = args.join(" ");
+        if (ag.includes(",")) {
+            items = ag.split(", ");
+        }
+        console.log(items);
+        process.exit();
         let search_results = await dbm.findItemByName(args.join(" ").split('\'').join('\\\''));
         let item = search_results[0];
 

@@ -1,17 +1,20 @@
 const config = require('./config.json');
 const Discord = require('discord.js');
+const axios = require('axios');
 const commands = require('./modules/commands');
 const dbm = (require('./modules/database').new(config));
 const client = new Discord.Client({shards: "auto"});
 const alertManager = require('./modules/alerts');
 let platforms = ["pc", "ps4", "xbox", "switch"];
 
+
 client.login(config.token);
 
 client.on('ready', async () => {
-    console.log(`Vapor Trader - ${config.version}\nConnecting to feeds`)
-    await client.user.setActivity(`with ${await dbm.countItems()} items`)
-    alertManager.start(platforms, client, dbm);
+    //updateDB()
+    console.log(`Vapor Trader - ${config.version}`)
+    //await client.user.setActivity(`with ${await dbm.countItems()} items`)
+    //alertManager.start(platforms, client, dbm);
 })
 
 client.on('message', async (message) => {
@@ -30,10 +33,9 @@ client.on('message', async (message) => {
             }
         }
     }
-    ;
-    if (message.guild) {
-        let guildconfig = await dbm.getGuildConfig(message.guild);
-    }
+    // if (message.guild) {
+    //     dbm.getGuildConfig(message.guild);
+    // }
     commands.handle(message, client, dbm);
 })
 
@@ -113,4 +115,33 @@ function formatNo(x) {
     let parts = x.toString().split(".");
     parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     return parts.join(",");
+}
+
+async function updateDB() {
+    let {data} = await axios.get("https://docs.google.com/uc?id=1w_cSmhsULIoSt4tyNgnh7xY2N98Mfpbf&export=download");
+    let relics = data.relics;
+    let vaultInfo = data.eqmt;
+    let keys = Object.keys(vaultInfo);
+    for (let i = 0; i < keys.length; i++) {
+        console.log(`${i + 1}/${keys.length}`)
+        let item = vaultInfo[keys[i]];
+        console.log(item)
+        let subKeys = Object.keys(item.parts);
+        for (let a = 0; a < subKeys.length; a++) {
+            console.log(`\t${a + 1}/${subKeys.length}`)
+            let subItem = item.parts[subKeys[a]];
+            subItem.name = subKeys[a];
+            console.log(subItem)
+            let b = await findItemByName(subItem.name);
+            console.log(b);
+            process.exit()
+        }
+    }
+    // console.log(data)
+}
+
+async function findItemByName(name) {
+    return new Promise((resolve, reject) => {
+        dbm.pool.query(`SELECT * FROM general.items WHERE item.name_en ILIKE '${name}'`)
+    })
 }
