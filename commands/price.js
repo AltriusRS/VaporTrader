@@ -35,6 +35,8 @@ module.exports = {
             return;
         }
 
+        let embeds = [];
+        
         for(let n=0;n<items.length;n++){
           let pi = items[n];
           let search_results = await dbm.findItemByName(pi.split("\'").join("\\'"));
@@ -152,10 +154,14 @@ module.exports = {
 
             embed.setDescription(`__**Overall Statistics:**__\n` + text);
 
-            message.channel.send(embed)
+            embeds.push(embed);
+            await sleep(1000)
         }
         }
             message.channel.stopTyping()
+        for(let o=0;0<embeds.length;o++) {
+            await message.channel.send(embeds[o]);
+        }
     },
     preflight: (message, args, client, dbm) => {
         return true;
@@ -222,4 +228,8 @@ function formatNo(x) {
     let parts = x.toString().split(".");
     parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     return parts.join(".");
+}
+
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
 }
