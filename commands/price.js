@@ -153,7 +153,7 @@ module.exports = {
 
                     embeds.push(embed);
                     if((items.length - n) > 1){
-                        await sleep(750);
+                        await sleep(1000);
                     }
                 }
             }
