@@ -37,7 +37,7 @@ module.exports = {
             for (let n = 0; n < items.length; n++) {
                 let pi = items[n];
                 let search_results = await dbm.findItemByName(pi.split("\'").join("\\'"));
-                let item = search_results[0];
+                let item = search_results.results[0];
 
                 if (item === undefined) {
                     message.channel.send("Unknown Item: ` " + pi + "`")
@@ -72,7 +72,7 @@ module.exports = {
                             totalLow: 0
                         };
                         if (info.item.items_in_set[0].tags.includes('mod')) modMode = true;
-                        if (info.item.items_in_set.length > 1) {
+                        if (info.item.items_in_set.length > 1 && item.name_en.includes("Set")) {
                             for (let i = 0; i < info.item.items_in_set.length; i++) {
                                 let subItem = info.item.items_in_set[i];
                                 let title = subItem.en.item_name;
@@ -148,12 +148,15 @@ module.exports = {
                             text = text.split('Infinity%').join('Infinite');
                         }
                     }
-
-                    embed.setDescription(`__**Overall Statistics:**__\n` + text);
+                    let changeText = "";
+                    if(search_results.changed){
+                        changeText = `\`${search_results.original}\` was not found. Assuming you wanted this instead\n`
+                    }
+                    embed.setDescription(`${changeText}__**Overall Statistics:**__\n${text}`);
 
                     embeds.push(embed);
                     if((items.length - n) > 1){
-                        await sleep(750);
+                        await sleep(1000);
                     }
                 }
             }

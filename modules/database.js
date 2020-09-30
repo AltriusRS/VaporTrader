@@ -1,5 +1,6 @@
 const {Pool} = require('pg');
-
+const {distance, closest} = require('fastest-levenshtein');
+const all = require('../items.json');
 
 class User {
     constructor(user, config, parent) {
@@ -61,15 +62,20 @@ class DBM {
         })
     }
 
-    async findItemByName(name) {
-        console.log(`Querying ${name}`)
+    async findItemByName(name, noLev) {
         return new Promise((resolve, reject) => {
-            console.log(`Querying ${name}`)
-            this.pool.query(`SELECT * FROM general.items WHERE general.items.url_name ILIKE '%${name.split(' ').join('_').toLowerCase()}%' OR general.items.name_en ILIKE '%${name.split(' ').join(' ')}%'`, async (err, data) => {
-                console.log(`Querying ${name}`)
+            let new_name = name;
+            if (!noLev) {
+                new_name = closest(name.toLowerCase(), all);
+            }
+            this.pool.query(`SELECT * FROM general.items WHERE general.items.url_name ILIKE '%${new_name.split(' ').join('_').toLowerCase()}%' OR general.items.name_en ILIKE '%${new_name.split(' ').join(' ')}%'`, async (err, data) => {
                 if (err) resolve({passed: false, reason: err});
                 if (data.rows.length > 0) {
-                    resolve(data.rows);
+                    let changed = false;
+                    if (new_name !== name) {
+                        changed = true;
+                    }
+                    resolve({results: data.rows, assumed: new_name, original: name, changed});
                 } else {
                     resolve({passed: false, reason: "Item does not exist"});
                 }
@@ -77,7 +83,7 @@ class DBM {
         })
     }
 
-    async findItemByName(name) {
+    async findItemByNameDEPRECATED(name) {
         return new Promise((resolve, reject) => {
             this.pool.query(`SELECT * FROM general.items WHERE general.items.url_name ILIKE '%${name.split(' ').join('_').toLowerCase()}%' OR general.items.name_en ILIKE '%${name.split(' ').join(' ')}%'`, async (err, data) => {
                 if (err) resolve({passed: false, reason: err});
