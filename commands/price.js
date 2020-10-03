@@ -15,7 +15,7 @@ module.exports = {
     description: info.description,
     help: (message, client, config, pack) => {
         let embed = new Discord.MessageEmbed()
-            .setColor("#c06ed9")
+            .setColor("#f48a36")
             .setTitle(info.name)
             .setDescription(info.description.split("$$PREFIX").join(config.prefix))
             .addField("Aliases:", `\`${info.name}\`, \`${info.aliases.join("`, `")}\``)
@@ -52,7 +52,7 @@ module.exports = {
                         }
                     }
                     let embed = new Discord.MessageEmbed()
-                        .setColor("#c06ed9")
+                        .setColor("#f48a36")
                         .setTitle(`Price Information - ${item.name_en}`)
                         .setFooter("These prices may not always be attainable prices on the market, they are averages of the orders currently listing this item");
 

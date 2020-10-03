@@ -15,7 +15,7 @@ module.exports = {
     description: info.description,
     help: (message, client, config, pack) => {
         let embed = new Discord.MessageEmbed()
-            .setColor("#c06ed9")
+            .setColor("#f48a36")
             .setTitle(info.name)
             .setDescription(info.description.split("$$PREFIX").join(config.prefix))
             .addField("Aliases:", `\`${info.name}\`, \`${info.aliases.join("`, `")}\``)
@@ -29,7 +29,7 @@ module.exports = {
         let drops = await dbm.getRelic(era, name);
         era = era.split('');
         let embed = new Discord.MessageEmbed()
-            .setColor("#c06ed9")
+            .setColor("#f48a36")
             .setTitle(pack.commands.relic_drops.title)
             .setDescription(pack.commands.relic_drops.description.replace('$RELIC_NAME', `${era.shift().toUpperCase()}${era.join('')} ${name.toUpperCase()}`));
         for (let i = 0; i < drops.length; i++) {
