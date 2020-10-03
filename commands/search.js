@@ -22,7 +22,7 @@ module.exports = {
     run: async (pack, message, args, client, dbm) => {
         let search_results = await dbm.findItemByName(args.join(" "));
         if (search_results[0] === undefined) {
-            message.channel.send("Item not found");
+            message.channel.send(`Unknown Item: \`${args.join(" ")}\``);
             return
         };
 
