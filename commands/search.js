@@ -21,7 +21,10 @@ module.exports = {
     },
     run: async (pack, message, args, client, dbm) => {
         let search_results = await dbm.findItemByName(args.join(" "));
-        if (search_results[0] === undefined) return;
+        if (search_results[0] === undefined) {
+            message.channel.send("Item not found");
+            return
+        };
 
         let embed = new Discord.MessageEmbed()
             .setColor("#c06ed9")
