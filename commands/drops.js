@@ -1,6 +1,4 @@
 const Discord = require('discord.js');
-//const superagent = require('axios');
-const config = require('../config.json')
 const info = {
     name: "drops",
     aliases: ["d", "drop"],

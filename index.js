@@ -1,13 +1,49 @@
-const config = require('./config.json');
 const Discord = require('discord.js');
 const axios = require('axios');
 const commands = require('./modules/commands');
+let config = require('./config.json');
 const dbm = (require('./modules/database').new(config));
 const client = new Discord.Client({shards: "auto"});
 const alertManager = require('./modules/alerts');
 let platforms = ["pc", "ps4", "xbox", "switch"];
 
+config.theme = "#c06ed9";
+console.log("Configuring...")
+setTheme()
+console.log("Set Themes...")
+setInterval(setTheme, 1000 * 60 * 60 * 24)
 
+function setTheme() {
+    let now = new Date();
+    let month = now.getMonth();
+    if (month === 12) {
+        config.theme = "#D8D8D8";
+    } else if (month === 9) {
+        config.theme = "#ef843d";
+    } else if (month === 2) {
+        config.theme = "#F573A5";
+    } else if (month === 4) {
+        config.theme = "#7289DA";
+    } else if (month === 5) {
+        let k = config;
+        let cfgKeys = Object.keys(config);
+        config = {
+            get theme() {
+                let colors = ["#E40303", "#FF8C00", "#FFED00", "#008026", "#004DFF", "#750787"];
+                return colors[Math.floor(Math.random() * colors.length)];
+            }
+        }
+        cfgKeys.forEach(key => {
+            if (key !== "theme") {
+                config[key] = k[key];
+            }
+        })
+    } else if (month === 1) {
+        config.theme = "#000000";
+    }
+}
+
+console.log("Logging in...")
 client.login(config.token);
 
 client.on('ready', async () => {
@@ -46,44 +82,48 @@ client.on('message', async (message) => {
     commands.handle(message, client, dbm);
 })
 
-client.on('priceAlert', async (alerts, info, buy) => {
-    for (var i = 0; i < alerts.length; i++) {
-        let alert = alerts[i];
-        let u = client.users.cache.get(alert.user)
-        let pack = await commands.choosePack(dbm, alert.user);
-        let description = pack.alerts.description;
-        description = description.split("$ITEM_NAME").join(info.order.item[pack.apiName].item_name);
-        description = description.replace("$BUYER_FORMATTED", formatBuyer(buy));
-        description = description.replace("$WTS-B", formatBuyer2(buy));
-        description = description.replace("$INGAME_NAME", info.order.user.ingame_name);
-        description = description.replace("$PRICE", info.order.platinum);
-        let embed = new Discord.MessageEmbed()
-            .setColor(config.theme)
-            .setTitle(pack.alerts.title)
-            .setThumbnail(`https://warframe.market/static/assets/${info.order.item.icon}`)
-            .setDescription(description)
-            .setFooter(pack.alerts.footer)
+// client.on('priceAlert', async (alerts, info, buy) => {
+//     for (var i = 0; i < alerts.length; i++) {
+//         let alert = alerts[i];
+//         let u = client.users.cache.get(alert.user)
+//         let pack = await commands.choosePack(dbm, alert.user);
+//         let description = pack.alerts.description;
+//         description = description.split("$ITEM_NAME").join(info.order.item[pack.apiName].item_name);
+//         description = description.replace("$BUYER_FORMATTED", formatBuyer(buy));
+//         description = description.replace("$WTS-B", formatBuyer2(buy));
+//         description = description.replace("$INGAME_NAME", info.order.user.ingame_name);
+//         description = description.replace("$PRICE", info.order.platinum);
+//         let embed = new Discord.MessageEmbed()
+//             .setColor(config.theme)
+//             .setTitle(pack.alerts.title)
+//             .setThumbnail(`https://warframe.market/static/assets/${info.order.item.icon}`)
+//             .setDescription(description)
+//             .setFooter(pack.alerts.footer)
+//
+//         if (((alerts.length) - 1) > 0) {
+//             if (((alerts.length) - 1) > 1) {
+//                 embed.addField(pack.alerts.multiUserAlert.title, pack.alerts.multiUserAlert.plural)
+//             } else {
+//                 embed.addField(pack.alerts.multiUserAlert.title, pack.alerts.multiUserAlert.singular)
+//             }
+//         }
+//
+//         if (info.order.user.avatar) {
+//             embed.setAuthor(info.order.user.ingame_name, `https://warframe.market/static/assets/${info.order.user.avatar}`);
+//         } else {
+//             embed.setAuthor(info.order.user.ingame_name, "https://warframe.market/static/assets/user/default-avatar.png");
+//         }
+//         try {
+//             await u.send(embed);
+//         } catch (e) {
+//             console.log(e);
+//         }
+//     }
+// })
 
-        if (((alerts.length) - 1) > 0) {
-            if (((alerts.length) - 1) > 1) {
-                embed.addField(pack.alerts.multiUserAlert.title, pack.alerts.multUserAlert.plural)
-            } else {
-                embed.addField(pack.alerts.multiUserAlert.title, pack.alerts.multUserAlert.singular)
-            }
-        }
+client.on("ComparisonOrder", (order) => {
 
-        if (info.order.user.avatar) {
-            embed.setAuthor(info.order.user.ingame_name, `https://warframe.market/static/assets/${info.order.user.avatar}`);
-        } else {
-            embed.setAuthor(info.order.user.ingame_name, "https://warframe.market/static/assets/user/default-avatar.png");
-        }
-        try {
-            await u.send(embed);
-        } catch (e) {
-            console.log(e);
-        }
-    }
-})
+});
 
 client.on("guildCreate", async (guild) => {
     await dbm.getGuildConfig(guild)

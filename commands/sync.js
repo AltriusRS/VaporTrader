@@ -26,17 +26,18 @@ module.exports = {
             .setColor(config.theme);
         if (u.WFMID !== undefined && u.WFMID !== null) {
             let profile = (await axios.get("https://api.warframe.market/v1/profile/" + u.ingameName)).data.payload.profile;
-            dbm.pool.query(`UPDATE general.user_config SET platform = '${profile.platform}', region = '${profile.region.toUpperCase()}', lang='${profile.region.toLowerCase()}' WHERE id = ${message.author.id}`, (err, data) => {
+            dbm.pool.query(`UPDATE general.user_config SET platform = '${profile.platform}', region = '${profile.region.toUpperCase()}', lang='${profile.region.toLowerCase()}' WHERE id = ${message.author.id}`, async (err, data) => {
                 if (err) throw err;
+                let np = await pack.choosePack(dbm, message.author.id);
                 embed
-                    .setTitle("Profile configuration synchronized")
-                    .setDescription("Your platform, region, and language have all been synchronized successfully!")
+                    .setTitle(np.commands.sync.success.title)
+                    .setDescription(np.commands.sync.success.description)
                 message.channel.send(embed);
             })
         } else {
             embed
-                .setTitle("Error")
-                .setDescription(`Your Warframe Market account must be linked to your Discord account to perform this action.\nYou can link them by using the \`${config.prefix}verify\` command and following the provided instructions`);
+                .setTitle(ack.commands.sync.error.title)
+                .setDescription(pack.commands.sync.error.description.replace("$PREFIX", config.prefix));
             await message.channel.send(embed);
         }
     },

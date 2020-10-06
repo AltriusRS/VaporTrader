@@ -22,8 +22,8 @@ module.exports = {
     run: async (pack, message, args, client, dbm) => {
         let embed = new Discord.MessageEmbed()
             .setColor(config.theme)
-            .setTitle("Account Unlinked")
-            .setDescription(`Your account has been fully unlinked from your Discord user. You can re-link your account by using \`${config.prefix}verify\` at any time.`);
+            .setTitle(pack.commands.unlink.success.title)
+            .setDescription(pack.commands.unlink.success.description.replace("$PREFIX", config.prefix));
         dbm.pool.query(`UPDATE general.user_config SET code = NULL, wfm_id = NULL, ingame_name = NULL WHERE id = ${message.author.id}`, (err, data) => {
             if (err) throw err;
             message.author.send(embed);

@@ -1,6 +1,5 @@
 const crypto = require('crypto');
 const Discord = require('discord.js');
-const config = require('../config.json')
 const info = {
     name: "verify",
     aliases: ["vf"],
@@ -26,10 +25,10 @@ module.exports = {
         md5sum.update(`${message.author.id}${message.channel.id}${message.id}${message.createdTimestamp}`);
         let embed = new Discord.MessageEmbed()
             .setColor("#c06ed9")
-            .setTitle("Account Linking.")
+            .setTitle(pack.commands.verify.title)
         let code = shorten(md5sum.digest('hex'), 12);
-        embed.setDescription(`You can verify your Warframe Market account by sending a dm to [VaporTrader](https://warframe.market/profile/VaporTrader) and hitting the "send message" button. the content of the message should only be the code below`);
-        embed.addField("Verification Code", code, true);
+        embed.setDescription(pack.commands.verify.description);
+        embed.addField(pack.commands.verify.fieldTitle, code, true);
         dbm.pool.query(`UPDATE general.user_config SET code = '${code}' WHERE id = ${message.author.id}`, (err, data) => {
             if (err) throw err;
             message.author.send(embed);

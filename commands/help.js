@@ -34,10 +34,11 @@ module.exports = {
         }
 
         let coms = Object.keys(fullcomms)
+        coms = coms.sort()
         for (let i = 0; i < coms.length; i++) {
             let key = fullcomms[coms[i]];
             if (key.public) {
-                embed.addField(key.name, `${key.description.split("$$PREFIX").join(config.prefix)}`)
+                embed.addField(key.name, `${key.description.split("$$PREFIX").join(config.prefix)}`, true)
             }
         }
 

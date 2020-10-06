@@ -1,6 +1,4 @@
 const Discord = require('discord.js');
-const config = require('../config.json');
-const ignore = ["forma blueprint"];
 const info = {
     name: "relic",
     aliases: ["rd"],
