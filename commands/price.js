@@ -152,7 +152,7 @@ module.exports = {
                         (e) {
                         console.log("encountered an error getting item price history", e);
                         text += "\n:exclamation: Had problems fetching most recent price data :exclamation:";
-                    }1
+                    }
                     text = pack.commands.price.description
                         .replace("$AVERAGE", "N/A")
                         .replace("$HIGH", "N/A")
