@@ -13,7 +13,14 @@ client.login(config.token);
 client.on('ready', async () => {
     // updateDB()
     console.log(`Vapor Trader - ${config.version}`)
-    await client.user.setActivity(`with ${await dbm.countItems()} items`)
+    let v = 0;
+    setInterval(async () => {
+        let statuses = [`with ${await dbm.countItems()} items`, `$help`, `with the prices`, `$help`, `with my relics`, `with platinum`, `$help`];
+        client.user.setActivity(statuses[v]);
+        v++
+        if (v === statuses.length) v = 0
+    }, 60000)
+
     alertManager.start(platforms, client, dbm);
 })
 

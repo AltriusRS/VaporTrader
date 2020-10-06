@@ -2,7 +2,7 @@ const Discord = require('discord.js');
 const info = {
     name: "unlink",
     aliases: [],
-    public: false,
+    public: true,
     description: `Unlink your Warframe Market and Discord accounts`,
 }
 
