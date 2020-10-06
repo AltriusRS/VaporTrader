@@ -26,7 +26,6 @@ module.exports = {
             .setColor(config.theme);
         if (u.WFMID !== undefined && u.WFMID !== null) {
             let profile = (await axios.get("https://api.warframe.market/v1/profile/" + u.ingameName)).data.payload.profile;
-            console.log(profile)
             dbm.pool.query(`UPDATE general.user_config SET platform = '${profile.platform}', region = '${profile.region.toUpperCase()}', lang='${profile.region.toLowerCase()}' WHERE id = ${message.author.id}`, (err, data) => {
                 if (err) throw err;
                 embed

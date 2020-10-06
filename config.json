@@ -1,5 +1,5 @@
 {
-  "prefix": "1",
+  "prefix": "$",
   "token": "NzUyMjU4NDc0Njk1NTkwMDE5.X1VBTA.QVxbAaOFp-Wqmtm-rrYFAnsMXQY",
   "version": "1.0.3",
   "dev": true,
@@ -7,7 +7,7 @@
   "languagePacks": "./translations",
   "database": {
     "user": "zane",
-    "host": "vptd.cf",
+    "host": "localhost",
     "database": "vapor_trader_live",
     "password": "zane.sucks",
     "port": 5432
