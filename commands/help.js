@@ -14,7 +14,7 @@ module.exports = {
     description: info.description,
     help: (message, client, config, pack) => {
         let embed = new Discord.MessageEmbed()
-            .setColor("#f48a36")
+            .setColor(config.theme)
             .setTitle(info.name)
             .setDescription(info.description.split("$$PREFIX").join(config.prefix))
             .addField("Aliases:", `\`${info.name}\`, \`${info.aliases.join("`, `")}\``)
@@ -22,7 +22,7 @@ module.exports = {
     },
     run: async (pack, message, args, client, dbm, commands, config) => {
         let embed = new Discord.MessageEmbed()
-            .setColor("#f48a36")
+            .setColor(config.theme)
             .setTitle(`Help`)
             .setDescription(`Quick Info:\nPrefix: \`${config.prefix}\`\nUse: \`${config.prefix}<command> help\` to get detailed information about the command`);
         let fullcomms = {};

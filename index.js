@@ -11,10 +11,10 @@ let platforms = ["pc", "ps4", "xbox", "switch"];
 client.login(config.token);
 
 client.on('ready', async () => {
-    //updateDB()
+    // updateDB()
     console.log(`Vapor Trader - ${config.version}`)
-    //await client.user.setActivity(`with ${await dbm.countItems()} items`)
-    //alertManager.start(platforms, client, dbm);
+    await client.user.setActivity(`with ${await dbm.countItems()} items`)
+    alertManager.start(platforms, client, dbm);
 })
 
 client.on('message', async (message) => {
@@ -23,7 +23,7 @@ client.on('message', async (message) => {
             if (message.embeds[0].title.includes(config.patchLocator) && message.embeds[0].description.includes("[PATCH]")) {
                 let cnl = await client.channels.fetch('759720616068382730');
                 let embed = new Discord.MessageEmbed()
-                    .setColor("#C06ED9")
+                    .setColor(config.theme)
                     .setTitle("Automated Patch (Source: GitHub)")
                     .setDescription(`Automatically applying patch [${message.embeds[0].description.split('(')[0].split('[`')[1].split('`]')[0]}](${message.embeds[0].url})`)
                     .addField(`Requested By`, "Github")
@@ -51,7 +51,7 @@ client.on('priceAlert', async (alerts, info, buy) => {
         description = description.replace("$INGAME_NAME", info.order.user.ingame_name);
         description = description.replace("$PRICE", info.order.platinum);
         let embed = new Discord.MessageEmbed()
-            .setColor("#C06ED9")
+            .setColor(config.theme)
             .setTitle(pack.alerts.title)
             .setThumbnail(`https://warframe.market/static/assets/${info.order.item.icon}`)
             .setDescription(description)
@@ -59,9 +59,9 @@ client.on('priceAlert', async (alerts, info, buy) => {
 
         if (((alerts.length) - 1) > 0) {
             if (((alerts.length) - 1) > 1) {
-                embed.addField(pack.alerts.multUserAlert.title, pack.alerts.multUserAlert.plural)
+                embed.addField(pack.alerts.multiUserAlert.title, pack.alerts.multUserAlert.plural)
             } else {
-                embed.addField(pack.alerts.multUserAlert.title, pack.alerts.multUserAlert.singular)
+                embed.addField(pack.alerts.multiUserAlert.title, pack.alerts.multUserAlert.singular)
             }
         }
 
@@ -93,6 +93,23 @@ client.on("guildCreate", async (guild) => {
     embed.setThumbnail(guild.iconURL())
 
     await client.channels.cache.get("760621133535248396").send(embed)
+})
+
+client.on("UserVerified", async (user) => {
+    let u = client.users.cache.get(user.id);
+    let embed = new Discord.MessageEmbed()
+        .setColor(config.theme)
+        .setTitle("Verification Succes!")
+        .setDescription(`Hey there ${u.username}, Your Warframe Market <-> Discord verification has been successful.\nIf you wish to unlink your accounts, you can do so at anytime using \`${config.prefix}unlink\`.`)
+        .addField("In-game Name", user.ingame_name, true)
+
+    if (user.avatar !== null) {
+        embed.setThumbnail(`https://warframe.market/${user.avatar}`);
+    } else {
+        embed.setThumbnail(`https://warframe.market/static/assets/user/default-avatar.png`);
+    }
+
+    u.send(embed);
 })
 
 function formatBuyer(buy) {

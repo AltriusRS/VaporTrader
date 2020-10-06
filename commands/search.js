@@ -13,7 +13,7 @@ module.exports = {
     description: info.description,
     help: (message, client, config, pack) => {
         let embed = new Discord.MessageEmbed()
-            .setColor("#f48a36")
+            .setColor(config.theme)
             .setTitle(info.name)
             .setDescription(info.description.split("$$PREFIX").join(config.prefix))
             .addField("Aliases:", `\`${info.name}\`, \`${info.aliases.join("`, `")}\``)
@@ -27,7 +27,7 @@ module.exports = {
         };
 
         let embed = new Discord.MessageEmbed()
-            .setColor("#f48a36")
+            .setColor(config.theme)
             .setTitle(pack.commands.search.title)
             .setFooter(pack.commands.search.footer);
         if (search_results.length > 9) {

@@ -14,7 +14,7 @@ module.exports = {
     description: info.description,
     help: (message, client, config, pack) => {
         let embed = new Discord.MessageEmbed()
-            .setColor("#f48a36")
+            .setColor(config.theme)
             .setTitle(info.name)
             .setDescription(info.description.split("$$PREFIX").join(config.prefix))
             .addField("Aliases:", `\`${info.name}\`, \`${info.aliases.join("`, `")}\``)
@@ -22,7 +22,7 @@ module.exports = {
     },
     run: async (pack, message, args, client, dbm) => {
         let embed = new Discord.MessageEmbed()
-            .setColor("#f48a36")
+            .setColor(config.theme)
             .setTitle(pack.commands.credits.titleText)
             .setDescription(pack.commands.credits.description)
             .addField(pack.commands.credits.field1, "REAPER_corp#8846", true)

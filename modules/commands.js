@@ -100,6 +100,6 @@ function readPacks() {
 async function choosePack(dbm, user) {
     let userConfig = await dbm.getUserConfig({id: user});
     let pack = languagePacks[userConfig.language];
-    pack = pack !== undefined ? pack : languagePacks.en_GB;
+    pack = pack !== undefined ? pack : languagePacks.en;
     return pack;
 }

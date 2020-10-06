@@ -1,13 +1,13 @@
 {
-  "prefix": "$",
+  "prefix": "1",
   "token": "NzUyMjU4NDc0Njk1NTkwMDE5.X1VBTA.QVxbAaOFp-Wqmtm-rrYFAnsMXQY",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "dev": true,
   "ownerID": "180639594017062912",
   "languagePacks": "./translations",
   "database": {
     "user": "zane",
-    "host": "localhost",
+    "host": "vptd.cf",
     "database": "vapor_trader_live",
     "password": "zane.sucks",
     "port": 5432
@@ -16,5 +16,7 @@
     "base": "https://api.warframe.market/v1",
     "socket": "wss://warframe.market/socket"
   },
-  "patchLocator": "[PriceSpy:v2]"
+  "JWT": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzaWQiOiJsdTlxM04xSXhyV2IzbWRwc1hDT29lVDZ6N0RKRGVZNiIsImNzcmZfdG9rZW4iOiIzNWJlMjk3MTIyMzZjZjY2NDUyMmNkNzEwNmRkOGJhN2NkYmZjMTYxIiwiZXhwIjoxNjA3MTY1MDYwLCJpYXQiOjE2MDE5ODEwNjAsImlzcyI6Imp3dCIsImF1ZCI6Imp3dCIsImF1dGhfdHlwZSI6ImNvb2tpZSIsInNlY3VyZSI6dHJ1ZSwiand0X2lkZW50aXR5IjoibzJmNkZKY2wxSDZtUzJ1dE5Gd1MwVEsyY2pJOEpXOWoiLCJsb2dpbl91YSI6ImInTW96aWxsYS81LjAgKFgxMTsgTGludXggeDg2XzY0KSBBcHBsZVdlYktpdC81MzcuMzYgKEtIVE1MLCBsaWtlIEdlY2tvKSBDaHJvbWUvODUuMC40MTgzLjEyMSBTYWZhcmkvNTM3LjM2JyIsImxvZ2luX2lwIjoiYic5NC41LjQzLjMyJyJ9.tGvxXT3KJsrFHT8juTycOhd0eGcgftUJxS66cDOE_Vg",
+  "patchLocator": "[PriceSpy:v2]",
+  "theme": "#f48a36"
 }

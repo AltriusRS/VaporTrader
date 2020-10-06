@@ -7,6 +7,10 @@ class User {
         this.id = user.id;
         this.platform = config.platform;
         this.language = config.lang;
+        this.subTier = config.sub_tier;
+        this.maxAlerts = config.max_alerts;
+        this.ingameName = config.ingame_name;
+        this.WFMID = config.wfm_id;
         this.wishlists = [];
         this.getWishLists = async () => {
             this.wishlists = await parent.getUserWishList(this.id, this);
