@@ -76,50 +76,50 @@ client.on('message', async (message) => {
             }
         }
     }
-    // if (message.guild) {
-    //     dbm.getGuildConfig(message.guild);
-    // }
+    if (message.guild) {
+        dbm.getGuildConfig(message.guild);
+    }
     commands.handle(message, client, dbm);
 })
 
-// client.on('priceAlert', async (alerts, info, buy) => {
-//     for (var i = 0; i < alerts.length; i++) {
-//         let alert = alerts[i];
-//         let u = client.users.cache.get(alert.user)
-//         let pack = await commands.choosePack(dbm, alert.user);
-//         let description = pack.alerts.description;
-//         description = description.split("$ITEM_NAME").join(info.order.item[pack.apiName].item_name);
-//         description = description.replace("$BUYER_FORMATTED", formatBuyer(buy));
-//         description = description.replace("$WTS-B", formatBuyer2(buy));
-//         description = description.replace("$INGAME_NAME", info.order.user.ingame_name);
-//         description = description.replace("$PRICE", info.order.platinum);
-//         let embed = new Discord.MessageEmbed()
-//             .setColor(config.theme)
-//             .setTitle(pack.alerts.title)
-//             .setThumbnail(`https://warframe.market/static/assets/${info.order.item.icon}`)
-//             .setDescription(description)
-//             .setFooter(pack.alerts.footer)
-//
-//         if (((alerts.length) - 1) > 0) {
-//             if (((alerts.length) - 1) > 1) {
-//                 embed.addField(pack.alerts.multiUserAlert.title, pack.alerts.multiUserAlert.plural)
-//             } else {
-//                 embed.addField(pack.alerts.multiUserAlert.title, pack.alerts.multiUserAlert.singular)
-//             }
-//         }
-//
-//         if (info.order.user.avatar) {
-//             embed.setAuthor(info.order.user.ingame_name, `https://warframe.market/static/assets/${info.order.user.avatar}`);
-//         } else {
-//             embed.setAuthor(info.order.user.ingame_name, "https://warframe.market/static/assets/user/default-avatar.png");
-//         }
-//         try {
-//             await u.send(embed);
-//         } catch (e) {
-//             console.log(e);
-//         }
-//     }
-// })
+client.on('priceAlert', async (alerts, info, buy) => {
+    for (var i = 0; i < alerts.length; i++) {
+        let alert = alerts[i];
+        let u = client.users.cache.get(alert.user)
+        let pack = await commands.choosePack(dbm, alert.user);
+        let description = pack.alerts.description;
+        description = description.split("$ITEM_NAME").join(info.order.item[pack.apiName].item_name);
+        description = description.replace("$BUYER_FORMATTED", formatBuyer(buy));
+        description = description.replace("$WTS-B", formatBuyer2(buy));
+        description = description.replace("$INGAME_NAME", info.order.user.ingame_name);
+        description = description.replace("$PRICE", info.order.platinum);
+        let embed = new Discord.MessageEmbed()
+            .setColor(config.theme)
+            .setTitle(pack.alerts.title)
+            .setThumbnail(`https://warframe.market/static/assets/${info.order.item.icon}`)
+            .setDescription(description)
+            .setFooter(pack.alerts.footer)
+
+        if (((alerts.length) - 1) > 0) {
+            if (((alerts.length) - 1) > 1) {
+                embed.addField(pack.alerts.multiUserAlert.title, pack.alerts.multiUserAlert.plural)
+            } else {
+                embed.addField(pack.alerts.multiUserAlert.title, pack.alerts.multiUserAlert.singular)
+            }
+        }
+
+        if (info.order.user.avatar) {
+            embed.setAuthor(info.order.user.ingame_name, `https://warframe.market/static/assets/${info.order.user.avatar}`);
+        } else {
+            embed.setAuthor(info.order.user.ingame_name, "https://warframe.market/static/assets/user/default-avatar.png");
+        }
+        try {
+            await u.send(embed);
+        } catch (e) {
+            console.log(e);
+        }
+    }
+})
 
 client.on("ComparisonOrder", (order) => {
 
@@ -146,7 +146,7 @@ client.on("UserVerified", async (user) => {
     let u = client.users.cache.get(user.id);
     let embed = new Discord.MessageEmbed()
         .setColor(config.theme)
-        .setTitle("Verification Succes!")
+        .setTitle("Verification Success!")
         .setDescription(`Hey there ${u.username}, Your Warframe Market <-> Discord verification has been successful.\nIf you wish to unlink your accounts, you can do so at anytime using \`${config.prefix}unlink\`.`)
         .addField("In-game Name", user.ingame_name, true)
 
