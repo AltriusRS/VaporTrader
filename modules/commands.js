@@ -33,6 +33,7 @@ async function handle(message, client, dbm) {
                         .setTitle("Error")
                         .setDescription(`\`\`\`${e.stack}\`\`\``)
                     message.channel.send(embed);
+                    message.channel.stopTyping();
                     let cnl = await client.channels.fetch('760620973790986280');
                     embed.setTimestamp(Date.now())
                         .addField("Command", cmd.name, true)
@@ -58,7 +59,7 @@ async function handle(message, client, dbm) {
         } else if (command == "patch" && message.author.id === config.ownerID) {
             let cnl = await client.channels.fetch('759720616068382730');
             let embed = new Discord.MessageEmbed()
-                .setColor("#ff5700")
+                .setColor("#ffe06f")
                 .setTitle("Automated Patch (Source: Owner)")
                 .setDescription(`Automatically applying patch`)
                 .addField(`Requested By`, message.author.username)
@@ -100,6 +101,7 @@ function readPacks() {
 async function choosePack(dbm, user) {
     let userConfig = await dbm.getUserConfig({id: user});
     let pack = languagePacks[userConfig.language];
-    pack = pack !== undefined ? pack : languagePacks.en_GB;
+    pack = pack !== undefined ? pack : languagePacks.en;
+    pack.choosePack = choosePack;
     return pack;
 }

@@ -13,28 +13,21 @@ module.exports = {
     description: info.description,
     help: (message, client, config, pack) => {
         let embed = new Discord.MessageEmbed()
-            .setColor("#c06ed9")
+            .setColor(config.theme)
             .setTitle(info.name)
             .setDescription(info.description.split("$$PREFIX").join(config.prefix))
             .addField("Aliases:", `\`${info.name}\`, \`${info.aliases.join("`, `")}\``)
         message.channel.send(embed)
     },
     run: async (pack, message, args, client, dbm) => {
-        let search_results = {};
-        if (["-c", "--c", "-correct", "--correct"].includes(args[args.length - 1].toLowerCase())) {
-            args.pop();
-            search_results = await dbm.findItemByName(args.join(" "), false);
-        } else {
-            search_results = await dbm.findItemByName(args.join(" "), true);
-        }
-        if (search_results.results === undefined) {
-            await message.channel.send("Unable to find an exact match for that search term.")
-            return;
-        }
-        ;
+        let search_results = await dbm.findItemByName(args.join(" "));
+        if (search_results[0] === undefined) {
+            message.channel.send(`Unknown Item: \`${args.join(" ")}\``);
+            return
+        };
 
         let embed = new Discord.MessageEmbed()
-            .setColor("#c06ed9")
+            .setColor(config.theme)
             .setTitle(pack.commands.search.title)
             .setFooter(pack.commands.search.footer);
         if (search_results.length > 9) {

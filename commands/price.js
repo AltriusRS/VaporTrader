@@ -1,6 +1,5 @@
 const Discord = require('discord.js');
 const axios = require('axios');
-const config = require('../config.json')
 const info = {
     name: "price",
     aliases: ["p", "prices"],
@@ -15,13 +14,14 @@ module.exports = {
     description: info.description,
     help: (message, client, config, pack) => {
         let embed = new Discord.MessageEmbed()
-            .setColor("#c06ed9")
+            .setColor(config.theme)
             .setTitle(info.name)
             .setDescription(info.description.split("$$PREFIX").join(config.prefix))
             .addField("Aliases:", `\`${info.name}\`, \`${info.aliases.join("`, `")}\``)
         message.channel.send(embed)
     },
     run: async (pack, message, args, client, dbm) => {
+        let u = await dbm.getUserConfig(message.author);
         message.channel.startTyping()
         let items = [];
         let ag = args.join(" ");
@@ -29,7 +29,7 @@ module.exports = {
             items = ag.split(", ");
         }
         if (items.length > 5) {
-            await message.channel.send("Cannot Query more than 5 items at a time")
+            await message.channel.send(pack.commands.price.errors.tooManyItems)
             await message.channel.stopTyping()
         } else {
             if (items.length === 0) items.push(ag);
@@ -40,7 +40,7 @@ module.exports = {
                 let item = search_results.results[0];
 
                 if (item === undefined) {
-                    message.channel.send("Unknown Item: ` " + pi + "`")
+                    message.channel.send(pack.commands.price.errors.unknownItem.replace("$ITEM", pi))
                     message.channel.stopTyping()
                 } else {
                     if (!item.name_en.includes('Set')) {
@@ -51,20 +51,37 @@ module.exports = {
                             }
                         }
                     }
-                    let embed = new Discord.MessageEmbed()
-                        .setColor("#c06ed9")
-                        .setTitle(`Price Information - ${item.name_en}`)
-                        .setFooter("These prices may not always be attainable prices on the market, they are averages of the orders currently listing this item");
+                    let iname = item.name_en
 
-                    let text = `90 day average: N/A\n90 day high: N/A\n90 day low: N/A\n[View on warframe.market](https://warframe.market/items/${item.url_name})`;
+                    if (u.language === "ru") iname = item.name_ru;
+                    if (u.language === "ko") iname = item.name_ko;
+
+                    let embed = new Discord.MessageEmbed()
+                        .setColor(config.theme)
+                        .setTitle(pack.commands.price.title.replace("$ITEMNAME", iname))
+                        .setFooter(pack.commands.price.footer);
+
+                    let text = pack.commands.price.description.replace("$URLNAME", item.url_name);
                     let modMode = false;
                     let averages = undefined;
 
                     try {
-                        let info = (await axios.get(`https://api.warframe.market/v1/items/${item.url_name}`)).data.payload;
+                        let info = (await axios.get(`https://api.warframe.market/v1/items/${item.url_name}`, {
+                            headers: {
+                                "Platform": u.platform
+                            }
+                        })).data.payload;
                         embed.setThumbnail(`https://warframe.market/static/assets/${info.item.items_in_set[0].icon}`);
-                        let prices = (await axios.get(`https://api.warframe.market/v1/items/${item.url_name}/statistics`)).data.payload;
-                        let orders = (await axios.get(`https://api.warframe.market/v1/items/${item.url_name}/orders`)).data.payload.orders;
+                        let prices = (await axios.get(`https://api.warframe.market/v1/items/${item.url_name}/statistics`, {
+                            headers: {
+                                "Platform": u.platform
+                            }
+                        })).data.payload;
+                        let orders = (await axios.get(`https://api.warframe.market/v1/items/${item.url_name}/orders`, {
+                            headers: {
+                                "Platform": u.platform
+                            }
+                        })).data.payload.orders;
                         averages = calc_avg(prices.statistics_closed['90days'], orders);
                         let sub_totals = {
                             totalAVG: 0,
@@ -76,12 +93,12 @@ module.exports = {
                             for (let i = 0; i < info.item.items_in_set.length; i++) {
                                 let subItem = info.item.items_in_set[i];
                                 let title = subItem.en.item_name;
-                                let text = `[View Market](https://warframe.market/items/${subItem.url_name})`;
+                                let text = pack.commands.price.fields.componentItems.url.replace("$ITEMURL", subItem.url_name);
                                 let subavg = undefined;
                                 if (!subItem.set_root) {
                                     try {
-                                        let subPrices = (await axios.get(`https://api.warframe.market/v1/items/${subItem.url_name}/statistics`)).data.payload;
-                                        let subOrders = (await axios.get(`https://api.warframe.market/v1/items/${subItem.url_name}/orders`)).data.payload.orders;
+                                        let subPrices = (await axios.get(`https://api.warframe.market/v1/items/${subItem.url_name}/statistics`, {headers: {"Platform": u.platform}})).data.payload;
+                                        let subOrders = (await axios.get(`https://api.warframe.market/v1/items/${subItem.url_name}/orders`, {headers: {"Platform": u.platform}})).data.payload.orders;
                                         subavg = calc_avg(subPrices.statistics_closed['90days'], subOrders);
                                         sub_totals.totalAVG += subavg.averageAVG;
                                         sub_totals.totalHigh += subavg.highAVG;
@@ -90,8 +107,7 @@ module.exports = {
                                         console.log(e);
                                     }
                                     if (subavg !== undefined) {
-                                        text = `Average: ${subavg.averageAVG.toFixed(0)} <:vaportrader:757687668522877009>\nHigh: ${subavg.highAVG.toFixed(0)} <:platinum:757676262708871257>\nLow: ${subavg.lowAVG.toFixed(0)} <:platinum:757676262708871257>\n` + text
-                                        embed.addField(title, text, true);
+                                        embed.addField(subItem[u.language].item_name, pack.commands.price.fields.componentItems.description.replace("$AVERAGE", sub_totals.totalAVG.toFixed(0)).replace("$HIGH", sub_totals.totalHigh.toFixed(0)).replace("$LOW", sub_totals.totalLow.toFixed(0)), true);
                                     }
                                 }
                             }
@@ -99,7 +115,7 @@ module.exports = {
                             if (savings < averages.averageAVG - sub_totals.totalAVG) savings = averages.averageAVG - sub_totals.totalAVG;
                             if (savings < averages.highAVG - sub_totals.totalHigh) savings = averages.highAVG - sub_totals.totalHigh;
 
-                            embed.addField("Component Cost", `Average: ${sub_totals.totalAVG.toFixed(0)} <:vaportrader:757687668522877009>\nHighest: ${sub_totals.totalHigh.toFixed(0)} <:platinum:757676262708871257>\nLowest: ${sub_totals.totalLow.toFixed(0)} <:platinum:757676262708871257>\nYou save up to: ${savings.toFixed(0)} <:vaportrader:757687668522877009>`, false);
+                            embed.addField(pack.commands.price.fields.components.title, pack.commands.price.fields.components.description.replace("$SAVINGS", savings.toFixed(0)).replace("$AVERAGE", sub_totals.totalAVG.toFixed(0)).replace("$HIGH", sub_totals.totalHigh.toFixed(0)).replace("$LOW", sub_totals.totalLow.toFixed(0)), false);
                         }
                         if (modMode) {
                             let levels = {};
@@ -125,11 +141,11 @@ module.exports = {
                             Object.keys(levels).forEach(level => {
                                 let lvlaverages = calc_avg(levels[level].prices, levels[level].orders);
                                 if (level === "undefined") level = "MAX";
-                                let rankText = `Average: ${lvlaverages.averageAVG.toFixed(0)} <:vaportrader:757687668522877009>\nHigh: ${lvlaverages.highAVG.toFixed(0)} <:platinum:757676262708871257>\nLow: ${lvlaverages.lowAVG.toFixed(0)} <:platinum:757676262708871257>\nBuyers: ${formatNo(lvlaverages.buyVolumeTotal)}\nSellers: ${formatNo(lvlaverages.sellVolumeTotal)}\nUtilization*: ${formatNo(lvlaverages.marketCap.toFixed(0))}%\nPrice Trend: ${lvlaverages.ninetyDayTrend}`
+                                let rankText = pack.commands.price.fields.modRanks.replace("$AVERAGE", lvlaverages.averageAVG.toFixed(0)).replace("$HIGH", lvlaverages.highAVG.toFixed(0)).replace("$LOW", lvlaverages.lowAVG.toFixed(0)).replace("$BUYERS", formatNo(lvlaverages.buyVolumeTotal)).replace("$SELLERS", formatNo(lvlaverages.sellVolumeTotal)).replace("$CAP", formatNo(lvlaverages.marketCap.toFixed(0))).replace("$TREND", lvlaverages.ninetyDayTrend);
                                 if (rankText.includes('Infinity%')) {
-                                    rankText = rankText.split('Infinity%').join('Infinite');
+                                    rankText = rankText.split('Infinity%').join(pack.commands.price.infinityDef);
                                 }
-                                embed.addField(`Rank: ${level}`, rankText, true);
+                                embed.addField(pack.commands.price.rankDef.replace("$RANK", level), rankText, true);
                             })
                         }
                     } catch
@@ -137,25 +153,39 @@ module.exports = {
                         console.log("encountered an error getting item price history", e);
                         text += "\n:exclamation: Had problems fetching most recent price data :exclamation:";
                     }
-                    embed.setFooter("* The utilization of buyers, by the sellers (how well do the sellers supply the demands of buyers)\nThese prices may not always be attainable prices on the market, they are averages of the orders currently listing this item")
+                    text = pack.commands.price.description
+                        .replace("$AVERAGE", "N/A")
+                        .replace("$HIGH", "N/A")
+                        .replace("$LOW", "N/A")
+                        .replace("$CAP", "N/A")
+                        .replace("$BUYERS", "N/A")
+                        .replace("$SELLERS", "N/A")
+                        .replace("$TREND", "N/A")
+                        .replace("$90TREND", "N/A")
+                        .replace("$ITEMURL", "N/A");
 
                     if (averages !== undefined) {
                         item.avg_price = averages.averageAVG;
                         item.highest_price = averages.highAVG;
                         item.lowest_price = averages.lowAVG;
-                        text = `90 day average: ${item.avg_price.toFixed(0)} <:vaportrader:757687668522877009>\n90 day high: ${item.highest_price.toFixed(0)} <:platinum:757676262708871257>\n90 day low: ${item.lowest_price.toFixed(0)} <:platinum:757676262708871257>\nOrders (buy/sell): ${formatNo(averages.buyVolumeTotal)} / ${formatNo(averages.sellVolumeTotal)}\nUtilization*: ${formatNo(averages.marketCap.toFixed(0))}%\nPrice Trend: ${averages.trend}\nPrice Trend (90 days): ${averages.ninetyDayTrend}\n[View on warframe.market](https://warframe.market/items/${item.url_name})`
+                        text = pack.commands.price.description
+                            .replace("$AVERAGE", item.avg_price.toFixed(0))
+                            .replace("$HIGH", item.highest_price.toFixed(0))
+                            .replace("$LOW", item.lowest_price.toFixed(0))
+                            .replace("$CAP", formatNo(averages.marketCap.toFixed(0)))
+                            .replace("$BUYERS", formatNo(averages.buyVolumeTotal))
+                            .replace("$SELLERS", formatNo(averages.sellVolumeTotal))
+                            .replace("$TREND", averages.trend)
+                            .replace("$90TREND", averages.ninetyDayTrend)
+                            .replace("$ITEMURL", item.url_name);
                         if (text.includes('Infinity%')) {
                             text = text.split('Infinity%').join('Infinite');
                         }
                     }
-                    let changeText = "";
-                    if(search_results.changed){
-                        changeText = `\`${search_results.original}\` was not found. Assuming you wanted this instead\n`
-                    }
-                    embed.setDescription(`${changeText}__**Overall Statistics:**__\n${text}`);
+                    embed.setDescription(text);
 
                     embeds.push(embed);
-                    if((items.length - n) > 1){
+                    if ((items.length - n) > 1) {
                         await sleep(1000);
                     }
                 }

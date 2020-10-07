@@ -14,7 +14,7 @@ module.exports = {
     description: info.description,
     help: (message, client, config, pack) => {
         let embed = new Discord.MessageEmbed()
-            .setColor("#c06ed9")
+            .setColor(config.theme)
             .setTitle(info.name)
             .setDescription(info.description.split("$$PREFIX").join(config.prefix))
             .addField("Aliases:", `\`${info.name}\`, \`${info.aliases.join("`, `")}\``)
@@ -22,7 +22,7 @@ module.exports = {
     },
     run: async (pack, message, args, client, dbm) => {
         let embed = new Discord.MessageEmbed()
-            .setColor("#c06ed9")
+            .setColor(config.theme)
         if (["pc", "ps4", "xbox", "switch"].includes(args[0].toLowerCase())) {
             let success = await dbm.setUserPlatform(message.author, args[0].toLowerCase())
             if (success.passed) {

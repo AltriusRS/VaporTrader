@@ -1,6 +1,4 @@
 const Discord = require('discord.js');
-//const superagent = require('axios');
-const config = require('../config.json')
 const info = {
     name: "drops",
     aliases: ["d", "drop"],
@@ -15,7 +13,7 @@ module.exports = {
     description: info.description,
     help: (message, client, config, pack) => {
         let embed = new Discord.MessageEmbed()
-            .setColor("#c06ed9")
+            .setColor(config.theme)
             .setTitle(info.name)
             .setDescription(info.description.split("$$PREFIX").join(config.prefix))
             .addField("Aliases:", `\`${info.name}\`, \`${info.aliases.join("`, `")}\``)
@@ -28,7 +26,7 @@ module.exports = {
         console.log(item);
         let drops = await dbm.getItemDrops(item.id)
         let embed = new Discord.MessageEmbed()
-            .setColor("#c06ed9")
+            .setColor(config.theme)
             .setTitle("Drops")
             .setThumbnail(`https://warframe.market/static/assets/${item.icon}`);
         if (drops.length > 0) {

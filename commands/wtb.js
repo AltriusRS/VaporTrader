@@ -14,7 +14,7 @@ module.exports = {
     description: info.description,
     help: (message, client, config, pack) => {
         let embed = new Discord.MessageEmbed()
-            .setColor("#c06ed9")
+            .setColor(config.theme)
             .setTitle(info.name)
             .setDescription(info.description.split("$$PREFIX").join(config.prefix))
             .addField("Aliases:", `\`${info.name}\`, \`${info.aliases.join("`, `")}\``)
@@ -25,7 +25,7 @@ module.exports = {
         let success = await dbm.subscribePriceAlert(message.author, args.join('_').toLowerCase(), threshold, true)
         if (success.passed) {
             let embed = new Discord.MessageEmbed()
-                .setColor("#c06ed9")
+                .setColor(config.theme)
                 .setTitle(pack.commands.startAlert.title)
                 .setDescription(pack.commands.startAlert.description)
             message.channel.send(embed)

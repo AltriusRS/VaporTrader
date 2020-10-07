@@ -8,6 +8,10 @@ class User {
         this.id = user.id;
         this.platform = config.platform;
         this.language = config.lang;
+        this.subTier = config.sub_tier;
+        this.maxAlerts = config.max_alerts;
+        this.ingameName = config.ingame_name;
+        this.WFMID = config.wfm_id;
         this.wishlists = [];
         this.getWishLists = async () => {
             this.wishlists = await parent.getUserWishList(this.id, this);
@@ -76,19 +80,6 @@ class DBM {
                         changed = true;
                     }
                     resolve({results: data.rows, assumed: new_name, original: name, changed});
-                } else {
-                    resolve({passed: false, reason: "Item does not exist"});
-                }
-            })
-        })
-    }
-
-    async findItemByNameDEPRECATED(name) {
-        return new Promise((resolve, reject) => {
-            this.pool.query(`SELECT * FROM general.items WHERE general.items.url_name ILIKE '%${name.split(' ').join('_').toLowerCase()}%' OR general.items.name_en ILIKE '%${name.split(' ').join(' ')}%'`, async (err, data) => {
-                if (err) resolve({passed: false, reason: err});
-                if (data.rows.length > 0) {
-                    resolve(data.rows);
                 } else {
                     resolve({passed: false, reason: "Item does not exist"});
                 }
