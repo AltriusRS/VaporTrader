@@ -36,7 +36,7 @@ module.exports = {
             })
         } else {
             embed
-                .setTitle(ack.commands.sync.error.title)
+                .setTitle(pack.commands.sync.error.title)
                 .setDescription(pack.commands.sync.error.description.replace("$PREFIX", config.prefix));
             await message.channel.send(embed);
         }
