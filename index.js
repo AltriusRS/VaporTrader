@@ -51,14 +51,15 @@ client.on('ready', async () => {
     // updateDB()
     console.log(`Vapor Trader - ${config.version}`)
     let v = 0;
+    /*
     setInterval(async () => {
         let statuses = [`with ${await dbm.countItems()} items`, `$help`, `with the prices`, `$help`, `with my relics`, `with platinum`, `$help`];
         client.user.setActivity(statuses[v]);
         v++
         if (v === statuses.length) v = 0
     }, 60000)
-
-    alertManager.start(platforms, client, dbm);
+    */
+   // alertManager.start(platforms, client, dbm);
 })
 
 client.on('message', async (message) => {
@@ -82,7 +83,7 @@ client.on('message', async (message) => {
     }
     commands.handle(message, client, dbm);
 })
-
+/*
 client.on('priceAlert', async (alerts, info, buy) => {
     for (var i = 0; i < alerts.length; i++) {
         let alert = alerts[i];
@@ -121,7 +122,7 @@ client.on('priceAlert', async (alerts, info, buy) => {
         }
     }
 })
-
+*/
 client.on("ComparisonOrder", (order) => {
 
 });
