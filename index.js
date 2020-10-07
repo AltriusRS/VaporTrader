@@ -1,5 +1,6 @@
 const Discord = require('discord.js');
 const axios = require('axios');
+const fs = require('fs');
 const commands = require('./modules/commands');
 let config = require('./config.json');
 const dbm = (require('./modules/database').new(config));
