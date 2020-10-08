@@ -4,14 +4,19 @@ const all = require('../items.json');
 
 class User {
     constructor(user, config, parent) {
-        this.displayName = user.displayName !== undefined ? user.displayName : user.username;
-        this.id = user.id;
+        if (user !== undefined) {
+            this.displayName = user.displayName !== undefined ? user.displayName : user.username;
+        } else {
+            this.displayName = undefined;
+        }
+        this.id = config.id;
         this.platform = config.platform;
         this.language = config.lang;
         this.subTier = config.sub_tier;
         this.maxAlerts = config.max_alerts;
         this.ingameName = config.ingame_name;
         this.WFMID = config.wfm_id;
+        this.watching = config.watching
         this.wishlists = [];
         this.getWishLists = async () => {
             this.wishlists = await parent.getUserWishList(this.id, this);
@@ -267,6 +272,23 @@ class DBM {
                     resolve(new User(member, {platform: 'pc', language: 'en'}, this));
                 } else {
                     resolve(new User(member, data.rows[0], this));
+                }
+            })
+        })
+    }
+
+    async getUserConfigFromWFMid(id) {
+        return new Promise((resolve, reject) => {
+            this.pool.query(`SELECT * FROM general.user_config WHERE general.user_config.wfm_id = '${id}'`, async (err, data) => {
+                if (err) reject(err);
+                if (data === undefined) {
+                    resolve(undefined);
+                } else {
+                    if (data.rows.length === 0) {
+                        resolve(undefined);
+                    } else {
+                        resolve(new User(undefined, data.rows[0], this));
+                    }
                 }
             })
         })
