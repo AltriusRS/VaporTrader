@@ -1,6 +1,6 @@
 while :
 do
-        git pull origin v3
+        git pull origin v2
         clear
         node index.js
 done
