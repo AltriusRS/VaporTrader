@@ -36,8 +36,8 @@ module.exports = {
             })
         } else {
             embed
-                .setTitle(pack.commands.sync.error.title)
-                .setDescription(pack.commands.sync.error.description.replace("$PREFIX", config.prefix));
+                .setTitle(pack.commands.sync.failure.title)
+                .setDescription(pack.commands.sync.failure.description.replace("$PREFIX", config.prefix));
             await message.channel.send(embed);
         }
     },
