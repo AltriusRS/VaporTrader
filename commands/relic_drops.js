@@ -44,8 +44,6 @@ module.exports = {
                         if (info.vaulted) {
                             description += ":warning:"
                         }
-                    } else if (ignore.includes(item.item.toLowerCase())) {
-
                     } else {
                         console.log(item);
                         if (item.item.includes("Blueprint")) {
