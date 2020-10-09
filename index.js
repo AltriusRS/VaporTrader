@@ -126,7 +126,7 @@ client.on('priceAlert', async (alerts, info, buy) => {
 client.on("ComparisonOrder", (order) => {
 
 });
-if(config.)
+if(config.dev){
 client.on("guildCreate", async (guild) => {
     await dbm.getGuildConfig(guild)
     let embed = new Discord.MessageEmbed()
@@ -160,6 +160,7 @@ client.on("UserVerified", async (user) => {
 
     u.send(embed);
 })
+}
 
 function formatBuyer(buy) {
     if (buy) {
@@ -204,10 +205,4 @@ async function updateDB() {
         }
     }
     // console.log(data)
-}
-
-async function findItemByName(name) {
-    return new Promise((resolve, reject) => {
-        dbm.pool.query(`SELECT * FROM general.items WHERE item.name_en ILIKE '${name}'`)
-    })
 }
