@@ -1,6 +1,13 @@
 {
   "apiName": "en",
   "commands": {
+    "watch": {
+      "success": {
+        "titleWatching": "Success, you will now receive potential customers for your orders.",
+        "title": "Success, you will no longer receive potential customers for your orders.",
+        "description": "You can stop these at any time by running `$PREFIXwatch` again"
+      }
+    },
     "verify": {
       "title": "Account Linking.",
       "fieldTitle": "Verification Code",

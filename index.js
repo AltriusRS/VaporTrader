@@ -1,5 +1,6 @@
 const Discord = require('discord.js');
 const axios = require('axios');
+const fs = require('fs');
 const commands = require('./modules/commands');
 let config = require('./config.json');
 const dbm = (require('./modules/database').new(config));
@@ -49,14 +50,15 @@ client.login(config.token);
 client.on('ready', async () => {
     // updateDB()
     console.log(`Vapor Trader - ${config.version}`)
-    let v = 0;
-    setInterval(async () => {
-        let statuses = [`with ${await dbm.countItems()} items`, `$help`, `with the prices`, `$help`, `with my relics`, `with platinum`, `$help`];
-        client.user.setActivity(statuses[v]);
-        v++
-        if (v === statuses.length) v = 0
-    }, 60000)
-
+    if (!config.dev) {
+        let v = 0;
+        setInterval(async () => {
+            let statuses = [`with ${await dbm.countItems()} items`, `$help`, `with the prices`, `$help`, `with my relics`, `with platinum`, `$help`];
+            client.user.setActivity(statuses[v]);
+            v++
+            if (v === statuses.length) v = 0
+        }, 60000)
+    }
     alertManager.start(platforms, client, dbm);
 })
 
@@ -124,7 +126,7 @@ client.on('priceAlert', async (alerts, info, buy) => {
 client.on("ComparisonOrder", (order) => {
 
 });
-
+if(config.dev){
 client.on("guildCreate", async (guild) => {
     await dbm.getGuildConfig(guild)
     let embed = new Discord.MessageEmbed()
@@ -158,6 +160,7 @@ client.on("UserVerified", async (user) => {
 
     u.send(embed);
 })
+}
 
 function formatBuyer(buy) {
     if (buy) {
@@ -202,10 +205,4 @@ async function updateDB() {
         }
     }
     // console.log(data)
-}
-
-async function findItemByName(name) {
-    return new Promise((resolve, reject) => {
-        dbm.pool.query(`SELECT * FROM general.items WHERE item.name_en ILIKE '${name}'`)
-    })
 }
