@@ -19,6 +19,7 @@ module.exports.start = (platforms, client, dbm) => {
                 socket = new ws("wss://warframe.market/socket?platform=" + platform)
 
             }
+        setTimeout(socket.close, 1000 * 60 * 15)
             socket.on("close", (code) => {
                 socket = handleClose(code, platform, client, dbm);
             })
