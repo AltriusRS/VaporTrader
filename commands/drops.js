@@ -21,10 +21,8 @@ module.exports = {
     },
     run: async (pack, message, args, client, dbm) => {
         let search_results = (await dbm.findItemByName(args.join(" "))).results;
-        console.log(search_results)
         if (search_results[0] === undefined) return;
         let item = search_results[0];
-        console.log(item);
         let drops = await dbm.getItemDrops(item.id)
         let embed = new Discord.MessageEmbed()
             .setColor(config.theme)
