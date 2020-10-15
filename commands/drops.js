@@ -20,7 +20,7 @@ module.exports = {
         message.channel.send(embed)
     },
     run: async (pack, message, args, client, dbm) => {
-        let search_results = await dbm.findItemByName(args.join(" "));
+        let search_results = (await dbm.findItemByName(args.join(" "))).results;
         console.log(search_results)
         if (search_results[0] === undefined) return;
         let item = search_results[0];
