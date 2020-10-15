@@ -21,6 +21,7 @@ module.exports = {
     },
     run: async (pack, message, args, client, dbm) => {
         let search_results = await dbm.findItemByName(args.join(" "));
+        console.log(search_results)
         if (search_results[0] === undefined) return;
         let item = search_results[0];
         console.log(item);
