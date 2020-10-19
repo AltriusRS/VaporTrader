@@ -104,7 +104,7 @@ client.on('priceAlert', async (alerts, info, buy) => {
 
         if (((alerts.length) - 1) > 0) {
             if (((alerts.length) - 1) > 1) {
-                embed.addField(pack.alerts.multiUserAlert.title, pack.alerts.multiUserAlert.plural)
+                embed.addField(pack.alerts.multiUserAlert.title, pack.alerts.multiUserAlert.plural.replace("$OTHER_SUBSCRIBERS", (alerts.length-1)))
             } else {
                 embed.addField(pack.alerts.multiUserAlert.title, pack.alerts.multiUserAlert.singular)
             }
