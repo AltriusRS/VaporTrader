@@ -2,7 +2,7 @@
   "prefix": "$",
   "token": "NzUyMjU4NDc0Njk1NTkwMDE5.X1VBTA.QVxbAaOFp-Wqmtm-rrYFAnsMXQY",
   "version": "1.2.2",
-  "dev": false,
+  "dev": true,
   "ownerID": "180639594017062912",
   "languagePacks": "./translations",
   "database": {
