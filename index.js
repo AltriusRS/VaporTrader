@@ -53,7 +53,7 @@ client.on('ready', async () => {
     if (!config.dev) {
         let v = 0;
         setInterval(async () => {
-            let statuses = [`big news! October 31st!`, `with ${await dbm.countItems()} items`, `$help`, `big news! October 31st!`, `with the prices`, `$help`, `big news! October 31st!`, `with my relics`, `with platinum`, `$help`];
+            let statuses = [`with ${await dbm.countItems()} items`, `$help`, `with the prices`, `$help`, `with my relics`, `with platinum`, `$help`];
             client.user.setActivity(statuses[v]);
             v++
             if (v === statuses.length) v = 0
