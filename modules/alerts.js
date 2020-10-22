@@ -66,6 +66,7 @@ async function handleClose(code, platform, client, dbm) {
 }
 
 async function open(socket, platform) {
+    console.log(platform)
     if (platform === "pc") {
         socket.send(JSON.stringify({"type": "@WS/USER/SET_STATUS", "payload": "online"}))
     }
