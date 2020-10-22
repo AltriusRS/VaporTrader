@@ -21,18 +21,28 @@ module.exports = {
         message.channel.send(embed)
     },
     run: async (pack, message, args, client, dbm) => {
-        let embed = new Discord.MessageEmbed()
-            .setColor(config.theme)
-            .setTitle(pack.commands.credits.titleText)
-            .setDescription(pack.commands.credits.description)
-            .addField(pack.commands.credits.field1, "REAPER_corp#8846", true)
-            .addField(pack.commands.credits.field2, "Broken Cinder#2467\nZane#8888\nthefunniman#2388\nAshghj#6951\nSourdough#1759", true)
-            .addField(pack.commands.credits.field3.title, pack.commands.credits.field3.description, true)
-        message.channel.send(embed)
+    try {
+      const code = args.join(" ");
+      let evaled = eval(code);
+
+      if (typeof evaled !== "string")
+        evaled = require("util").inspect(evaled);
+
+      message.channel.send(clean(evaled), {code:"xl"});
+    } catch (err) {
+      message.channel.send(`\`ERROR\` \`\`\`xl\n${clean(err)}\n\`\`\``);
+    }
     },
     preflight: (message, args, client, dbm) => {
         message.channel.send(`${message.author.id} === ${config.ownerID} = ${(message.author.id === config.ownerID)}`)
         if(message.author.id === config.ownerID) return true;
         return false;
     }
+}
+
+function clean(text) {
+  if (typeof(text) === "string")
+    return text.replace(/`/g, "`" + String.fromCharCode(8203)).replace(/@/g, "@" + String.fromCharCode(8203));
+  else
+      return text;
 }
