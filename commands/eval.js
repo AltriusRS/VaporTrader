@@ -31,7 +31,7 @@ module.exports = {
         message.channel.send(embed)
     },
     preflight: (message, args, client, dbm) => {
-        if(message.author.id !== confi.ownerID) return true;
+        if(message.author.id !== config.ownerID) return true;
         return false;
     }
 }
