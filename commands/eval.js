@@ -34,7 +34,6 @@ module.exports = {
     }
     },
     preflight: (message, args, client, dbm) => {
-        message.channel.send(`${message.author.id} === ${config.ownerID} = ${(message.author.id === config.ownerID)}`)
         if(message.author.id === config.ownerID) return true;
         return false;
     }
