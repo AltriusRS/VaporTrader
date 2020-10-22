@@ -77,6 +77,7 @@ async function open(socket, platform) {
 async function handleMessage(data, platform, client, dbm, socket) {
     data = JSON.parse(data);
     if(platform === "pc") console.log(data.type)
+    if (data.type === "@WS/ERROR") console.log(data)
     if (data.type === "@WS/SUBSCRIPTIONS/MOST_RECENT/NEW_ORDER") {
         let info = data.payload;
         if (!config.dev) {
