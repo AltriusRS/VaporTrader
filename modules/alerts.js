@@ -10,6 +10,7 @@ module.exports.start = (platforms, client, dbm) => {
     platforms.forEach(platform => {
             let socket;
             if (platform === "pc") {
+                console.log(config)
                 socket = new ws("wss://warframe.market/socket?platform=" + platform, [], {
                     headers: {
                         'Cookie': 'JWT=' + config.JWT
