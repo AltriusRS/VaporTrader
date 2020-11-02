@@ -4,7 +4,7 @@ const fs = require('fs');
 const commands = require('./modules/commands');
 let config = require('./config.json');
 const dbm = (require('./modules/database').new(config));
-const client = new Discord.Client({shards: "auto", ws: { intents: ["GUILDS", "GUILD_MESSAGES"] }});
+const client = new Discord.Client({shards: "auto", partials: ["REACTION", "MESSAGE"], ws: { intents: ["GUILDS", "GUILD_MESSAGES"] }});
 const alertManager = require('./modules/alerts');
 let platforms = ["pc", "ps4", "xbox", "switch"];
 
