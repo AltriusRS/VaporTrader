@@ -58,7 +58,7 @@
     "info": {
       "title": "정보",
       "temp": "지연 시간 확인 중, 잠시만 기다려주세요...",
-      "description": "서버: $SERVER_COUNT\n지연 시간: $LATENCY ms\n아이템: $ITEM_COUNT\n캐시된 사용자: $USER_CACHE\n인증된 사용자: $USERS_VERIFIED\n개발자: Altrius#0420\n버전: $VERSION\n\n[지원 서버](https://discord.gg/wFKHNUz) (discord.gg)\n[초대 링크](https://discord.com/api/oauth2/authorize?client_id=752258474695590019&permissions=289792&scope=bot) (discord.com)\n[소스 코드](https://github.com/fatalcenturion/VaporTrader) (github.com)\n[개발자 지원하기](https://patreon.com/vaportrader) (patreon.com)\n\n이 봇은 Digital Extremes:tm:이나 warframe.market:copyright:와 관련이 없습니다"
+      "description": "서버: $SERVER_COUNT\n지연 시간: $LATENCY ms\n아이템: $ITEM_COUNT\n인증된 사용자: $USERS_VERIFIED\n개발자: Altrius#0420\n버전: $VERSION\n\n[지원 서버](https://discord.gg/wFKHNUz) (discord.gg)\n[초대 링크](https://discord.com/api/oauth2/authorize?client_id=752258474695590019&permissions=289792&scope=bot) (discord.com)\n[소스 코드](https://github.com/fatalcenturion/VaporTrader) (github.com)\n[개발자 지원하기](https://patreon.com/vaportrader) (patreon.com)\n\n이 봇은 Digital Extremes:tm:이나 warframe.market:copyright:와 관련이 없습니다"
     },
     "help": {
       "titleText": "텍스트"
