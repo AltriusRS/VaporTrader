@@ -58,7 +58,7 @@
     "info": {
       "title": "Information",
       "temp": "Checking latency, please wait...",
-      "description": "Servers: $SERVER_COUNT\nLatency: $LATENCY ms\nItems: $ITEM_COUNT\nUsers Cached: $USER_CACHE\nUsers Verified: $USERS_VERIFIED\nDeveloped by: Altrius#0420\nVersion: $VERSION\n\n[Support Server](https://discord.gg/wFKHNUz) (discord.gg)\n[Invite Link](https://discord.com/api/oauth2/authorize?client_id=752258474695590019&permissions=289792&scope=bot) (discord.com)\n[Source Code](https://github.com/fatalcenturion/VaporTrader) (github.com)\n[Support the Developer](https://patreon.com/vaportrader) (patreon.com)\n\nThis bot is not affiliated with Digital Extremes:tm: or warframe.market:copyright:"
+      "description": "Servers: $SERVER_COUNT\nLatency: $LATENCY ms\nItems: $ITEM_COUNT\nUsers Verified: $USERS_VERIFIED\nDeveloped by: Altrius#0420\nVersion: $VERSION\n\n[Support Server](https://discord.gg/wFKHNUz) (discord.gg)\n[Invite Link](https://discord.com/api/oauth2/authorize?client_id=752258474695590019&permissions=289792&scope=bot) (discord.com)\n[Source Code](https://github.com/fatalcenturion/VaporTrader) (github.com)\n[Support the Developer](https://patreon.com/vaportrader) (patreon.com)\n\nThis bot is not affiliated with Digital Extremes:tm: or warframe.market:copyright:"
     },
     "help": {
       "titleText": "some text"
